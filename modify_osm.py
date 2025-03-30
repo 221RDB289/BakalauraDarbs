@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 
-if __name__ == "__main__":
+
+def modify_osm():
     tree = ET.parse("riga.osm")
     root = tree.getroot()
 
@@ -29,7 +30,15 @@ if __name__ == "__main__":
                     # katram gadījumam izprintējam vērtību terminālī
                     print(f'INFO: tag.attrib["v"] = {tag.attrib["v"]}')
                     new_tag.set("v", tag.attrib["v"])
+
+                # noņemam arī pašreizējo vērtību, lai maksimālais ātrums būtu pirms vecās vērtības
+                way.remove(tag)
                 way.append(new_tag)
+                way.append(tag)
 
     # saglabā modificēto failu utf-8 formātā
     tree.write("riga_modified.osm", encoding="utf-8", xml_declaration=True)
+
+
+if __name__ == "__main__":
+    modify_osm()
