@@ -4,34 +4,32 @@ if __name__ == "__main__":
     tree = ET.parse("riga.osm")
     root = tree.getroot()
 
-    # adds maxspeed limits to urban and rural areas that don't have a maxspeed defined
+    # pievieno trūkstošās maksimālā braukšanas ātruma "maxspeed" vērtības:
     for way in root.iter("way"):
         for tag in way.iter("tag"):
-            # if the way has a maxspeed tag, then we can skip it
+            # ja ir "maxspeed":
             if tag.attrib.get("k") == "maxspeed":
                 break
-            # otherwise we need to specify the max speed (make a new tag)
+            # pievieno "maxspeed" vērtību:
             if tag.attrib.get("k") == "maxspeed:type":
                 new_tag = ET.Element("tag")
                 new_tag.set("k", "maxspeed")
+
                 # urban = 50 km/h
-                if tag.attrib["v"] == "LV:urban":
+                # pieņemam, ka Rīgā "rural" un "trunk" kategorijām arī limits ir 50 km/h
+                if (
+                    tag.attrib["v"] == "LV:urban"
+                    or tag.attrib["v"] == "LV:rural"
+                    or tag.attrib["v"] == "LV:trunk"
+                ):
                     new_tag.set("v", "50")
-                # rural = 80 or 90 km/h
-                elif tag.attrib["v"] == "LV:rural":
-                    surface = way.find(".//tag[@k='surface']").attrib["v"]
-                    if surface == "asphalt":
-                        new_tag.set("v", "90")
-                    else:
-                        new_tag.set("v", "80")
-                # trunk = 50 km/h
-                elif tag.attrib["v"] == "LV:trunk":
-                    new_tag.set("v", "50")
-                # its probably a number
+
+                # pieņemam, ka pārējās kategorijas ir skaitliskas vērtības
                 else:
+                    # katram gadījumam izprintējam vērtību terminālī
                     print(f'INFO: tag.attrib["v"] = {tag.attrib["v"]}')
                     new_tag.set("v", tag.attrib["v"])
                 way.append(new_tag)
 
-    # modified file with utf-8
+    # saglabā modificēto failu utf-8 formātā
     tree.write("riga_modified.osm", encoding="utf-8", xml_declaration=True)
