@@ -1,7 +1,0 @@
-<additional>
-    <!-- vClasses: https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html#abstract_vehicle_class -->
-    <vType id="myCar" maxSpeed="180" vClass="passenger"/>
-    <vType id="myCourier" maxSpeed="160" vClass="delivery"/>
-    <vType id="myMotorcycle" maxSpeed="200" vClass="motorcycle"/>
-    <vType id="myTram" maxSpeed="70" vClass="tram"/>
-</additional>
