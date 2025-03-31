@@ -4,6 +4,7 @@ import shutil
 import sys
 
 FOLDER = "simulation_files"
+STATIC = "static_files"
 
 if __name__ == "__main__":
     # ģenerē maršrutus nejaušības gadījumā
@@ -20,7 +21,7 @@ if __name__ == "__main__":
             "--validate",
             '--trip-attributes=type="myCar"',
             "--additional-file",
-            f"{FOLDER}/vehicle_types.xml",
+            f"{STATIC}/vehicle_types.xml",
         ]
         subprocess.run(cmd)
     if shutil.which("duarouter"):
