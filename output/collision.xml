@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2025-03-31 15:04:02 by Eclipse SUMO GUI Version 1.22.0
+<sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="C:\Users\blazi\Desktop\project\simulation_files/riga.net.xml"/>
+        <route-files value="C:\Users\blazi\Desktop\project\simulation_files/riga.rou.xml"/>
+    </input>
+
+    <output>
+        <battery-output value="C:\Users\blazi\Desktop\project\output/electric.xml"/>
+        <summary-output value="C:\Users\blazi\Desktop\project\output/summary.xml"/>
+        <tripinfo-output value="C:\Users\blazi\Desktop\project\output/tripinfo.xml"/>
+        <personinfo-output value="C:\Users\blazi\Desktop\project\output/personinfo.xml"/>
+        <vehroute-output value="C:\Users\blazi\Desktop\project\output/vehroute.xml"/>
+        <stop-output value="C:\Users\blazi\Desktop\project\output/stopinfo.xml"/>
+        <collision-output value="C:\Users\blazi\Desktop\project\output/collision.xml"/>
+        <edgedata-output value="C:\Users\blazi\Desktop\project\output/edgeData.xml"/>
+        <lanedata-output value="C:\Users\blazi\Desktop\project\output/laneData.xml"/>
+        <statistic-output value="C:\Users\blazi\Desktop\project\output/statistic.xml"/>
+    </output>
+
+    <time>
+        <begin value="0"/>
+        <end value="1000"/>
+        <step-length value="0.1"/>
+    </time>
+
+</sumoConfiguration>
+-->
+
+<collisions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/collision_file.xsd">
+</collisions>

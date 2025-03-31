@@ -5,21 +5,23 @@ import shutil
 import sys
 from modify_osm import *
 
+FOLDER = "simulation_files"
+
 if __name__ == "__main__":
-    if not os.path.exists("riga.net.xml"):
+    if not os.path.exists(f"{FOLDER}/riga.net.xml"):
         # 1. iegūst Latvijas mapi no geofabrik:
-        if not os.path.exists("latvia-latest.osm.pbf"):
+        if not os.path.exists(f"{FOLDER}/latvia-latest.osm.pbf"):
             urllib.request.urlretrieve(
                 "https://download.geofabrik.de/europe/latvia-latest.osm.pbf",
-                "latvia-latest.osm.pbf",
+                f"{FOLDER}/latvia-latest.osm.pbf",
             )
             print("Downloaded: latvia-latest.osm.pbf")
 
         # 2. iegūst Rīgas reģiona robežas:
-        if not os.path.exists("riga.poly"):
+        if not os.path.exists(f"{FOLDER}/riga.poly"):
             urllib.request.urlretrieve(
                 "https://polygons.openstreetmap.fr/get_poly.py?id=13048688&params=0",
-                "riga.poly",
+                f"{FOLDER}/riga.poly",
             )
             print("Downloaded: riga.poly")
 
@@ -30,45 +32,65 @@ if __name__ == "__main__":
             sys.exit()
 
         # 4. filtrē Rīgas reģionu no Latvijas OSM faila:
-        if not os.path.exists("riga.osm"):
+        if not os.path.exists(f"{FOLDER}/riga.osm"):
             cmd = [
                 osmosis,
                 "--read-pbf-fast",
-                "file=latvia-latest.osm.pbf",
+                f"file={FOLDER}/latvia-latest.osm.pbf",
                 "--bounding-polygon",
-                "file=riga.poly",
+                f"file={FOLDER}/riga.poly",
                 "--write-xml",
-                "file=riga.osm",
+                f"file={FOLDER}/riga.osm",
             ]
             subprocess.run(cmd)
 
         # 5. modificē OSM failu, lai izlabotu neeksistējošos maksimālos ātrumus:
-        if not os.path.exists("riga_modified.osm"):
+        if not os.path.exists(f"{FOLDER}/riga_modified.osm"):
             modify_osm()
             print("Modified: riga.osm")
 
         # 6. iegūst SUMO tīkla failu:
-        if not os.path.exists("riga.net.xml"):
+        if not os.path.exists(f"{FOLDER}/riga.net.xml"):
             if shutil.which("netconvert"):
+                # cmd = [
+                #     "netconvert",
+                #     "--osm-files",
+                #     "riga_modified.osm",
+                #     "--output-file",
+                #     "riga.net.xml",
+                #     "--keep-edges.by-vclass",
+                #     "delivery",
+                #     "--remove-edges.isolated",
+                #     "--remove-edges.explicit",
+                #     "unused",
+                #     "--junctions.join",
+                #     "--edges.join",
+                #     "--ramps.guess",
+                #     "--tls.guess-signals",
+                #     "--tls.join",
+                #     "--geometry.remove",
+                #     "--speed-in-kmh",
+                # ]
+
                 cmd = [
-                    "netconvert",
-                    "--osm-files",
-                    "riga_modified.osm",
-                    "--output-file",
-                    "riga.net.xml",
-                    "--keep-edges.by-vclass",
-                    "delivery",
-                    "--remove-edges.isolated",
-                    "--remove-edges.explicit",
-                    "unused",
-                    "--junctions.join",
-                    "--geometry.remove",
-                    "--keep-nodes-unregulated",
-                    "--speed-in-kmh",
-                    "--ramps.guess",
-                    "--tls.guess-signals",
-                    "--tls.join",
-                    # "--ignore-errors",
+                "netconvert",
+                "--osm-files", f"{FOLDER}/riga_modified.osm",
+                "-o", f"{FOLDER}/riga.net.xml",
+                "--geometry.remove",
+                "--ramps.guess",
+                "--junctions.join",
+                "--tls.guess-signals",
+                "--tls.discard-simple",
+                "--tls.join",
+                "--tls.default-type", "actuated",
+                "--keep-edges.by-vclass",
+                "delivery",
+                "--remove-edges.isolated",
+                "--remove-edges.explicit",
+                "unused",
+                "--edges.join",
+                "--speed-in-kmh",
+                "--output.street-names",
                 ]
                 subprocess.run(cmd)
             else:
@@ -76,7 +98,7 @@ if __name__ == "__main__":
                 sys.exit()
 
         # 7. nevajadzīgo failu izdzēšana:
-        os.remove("latvia-latest.osm.pbf")
-        os.remove("riga.poly")
-        os.remove("riga.osm")
-        os.remove("riga_modified.osm")
+        # os.remove(f"{FOLDER}/latvia-latest.osm.pbf")
+        # os.remove(f"{FOLDER}/riga.poly")
+        # os.remove(f"{FOLDER}/riga.osm")
+        # os.remove(f"{FOLDER}/riga_modified.osm")
