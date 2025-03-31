@@ -1,5 +1,5 @@
-/.venv
+.venv
 __pycache__
-eoutes.rou.xml
+routes.rou.xml
 simulation_files
 output
