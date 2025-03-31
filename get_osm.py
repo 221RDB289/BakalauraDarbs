@@ -6,6 +6,7 @@ import sys
 from modify_osm import *
 
 FOLDER = "simulation_files"
+STATIC = "static_files"
 
 if __name__ == "__main__":
     if not os.path.exists(f"{FOLDER}/riga.net.xml"):
@@ -98,7 +99,25 @@ if __name__ == "__main__":
                 print("ERROR: SUMO is not installed")
                 sys.exit()
 
-        # 7. nevajadzīgo failu izdzēšana:
+        # 7. filtrē tikai ēkas
+        if not os.path.exists(f"{FOLDER}/buildings.poly.xml"):
+            if shutil.which("polyconvert"):
+                cmd = [
+                    "polyconvert",
+                    "--osm-files",
+                    f"{FOLDER}/riga_modified.osm",
+                    "-o",
+                    f"{FOLDER}/buildings.poly.xml",
+                    "--discard",
+                    "--type-file",
+                    f"{STATIC}/building_types.xml",
+                ]
+                subprocess.run(cmd)
+            else:
+                print("ERROR: SUMO is not installed")
+                sys.exit()
+
+        # 8. nevajadzīgo failu izdzēšana:
         # os.remove(f"{FOLDER}/latvia-latest.osm.pbf")
         # os.remove(f"{FOLDER}/riga.poly")
         # os.remove(f"{FOLDER}/riga.osm")

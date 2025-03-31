@@ -7,5 +7,11 @@
 6. Jāatver repozitoriju cmd terminālī un jāizpilda komanda `python get_osm.py`
 
 # Python bibliotēkas simulācijām un optimizācijām:
+## Izmantotās bibliotēkas:
 - `pip install traci`
 - `pip install ortools`
+- `pip install geopy`
+- `pip install pyproj`
+- `pip install rtree`
+## Var arī instalēt projektā lietotās bibliotēku versijas:
+- `pip install -r requirements.txt`

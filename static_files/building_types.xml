@@ -1,0 +1,4 @@
+<polygonTypes>
+    <!-- saglabā tikai ēkas -->
+    <polygonType id="building" type="building" color="1,0,0" layer="-1" discard="false"/>
+</polygonTypes>
