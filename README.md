@@ -13,5 +13,6 @@
 - `pip install geopy`
 - `pip install pyproj`
 - `pip install rtree`
+- `pip install overpy`
 ## Var arī instalēt projektā lietotās bibliotēku versijas:
 - `pip install -r requirements.txt`
