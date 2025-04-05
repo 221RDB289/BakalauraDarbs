@@ -5,11 +5,15 @@ import shutil
 import sys
 from modify_osm import *
 
-FOLDER = "simulation_files"
+FOLDER = "simulation_files2"
 STATIC = "static_files"
 
 if __name__ == "__main__":
-    if not os.path.exists(f"{FOLDER}/riga.net.xml"):
+    # izveido mapi, ja tā neeksistē:
+    if not os.path.exists(FOLDER):
+        os.mkdir(FOLDER)
+    # izveido failus, ja tādi neeksistē:
+    if not os.path.exists(f"{FOLDER}/map_network.net.xml"):
         # 1. iegūst Latvijas mapi no geofabrik:
         if not os.path.exists(f"{FOLDER}/latvia-latest.osm.pbf"):
             urllib.request.urlretrieve(
@@ -26,59 +30,66 @@ if __name__ == "__main__":
             )
             print("Downloaded: riga.poly")
 
-        # 3. iegūst "osmosis" atrašanās vietu:
+        # 3. iegūst Mārupes reģiona robežas:
+        if not os.path.exists(f"{FOLDER}/marupe.poly"):
+            urllib.request.urlretrieve(
+                "https://polygons.openstreetmap.fr/get_poly.py?id=300035&params=0",
+                f"{FOLDER}/marupe.poly",
+            )
+            print("Downloaded: marupe.poly")
+
+        # 4. apvieno robežas:
+        if not os.path.exists(f"{FOLDER}/combined.poly"):
+            # nolasa un apvieno datus no robežu failiem:
+            with open(f"{FOLDER}/riga.poly", mode="r", encoding="utf-8") as f:
+                combined = f.read().rsplit("\n", 2)[
+                    0
+                ]  # noņem pēdējās 2 līnijas no faila
+            with open(f"{FOLDER}/marupe.poly", mode="r", encoding="utf-8") as f:
+                combined += (
+                    "\n2\n" + f.read().split("\n", 2)[2]
+                )  # pievieno 1 līniju un noņem pirmās 2 līnijas no faila
+            # izveido apvienoto robežu failu:
+            with open(f"{FOLDER}/combined.poly", mode="w", encoding="utf-8") as f:
+                f.write(combined)
+            print("Combined polygons: combined.poly")
+
+        # 5. iegūst "osmosis" atrašanās vietu:
         osmosis = shutil.which("osmosis")
         if not osmosis:
             print("ERROR: osmosis is not installed")
             sys.exit()
 
-        # 4. filtrē Rīgas reģionu no Latvijas OSM faila:
-        if not os.path.exists(f"{FOLDER}/riga.osm"):
+        # 6. filtrē izvēlētos reģionus no Latvijas OSM faila:
+        if not os.path.exists(f"{FOLDER}/map_filtered.osm"):
             cmd = [
                 osmosis,
                 "--read-pbf-fast",
                 f"file={FOLDER}/latvia-latest.osm.pbf",
                 "--bounding-polygon",
-                f"file={FOLDER}/riga.poly",
+                f"file={FOLDER}/combined.poly",
+                "completeWays=yes",
+                "completeRelations=yes",
+                "cascadingRelations=yes",
                 "--write-xml",
-                f"file={FOLDER}/riga.osm",
+                f"file={FOLDER}/map_filtered.osm",
             ]
             subprocess.run(cmd)
 
-        # 5. modificē OSM failu, lai izlabotu neeksistējošos maksimālos ātrumus:
-        if not os.path.exists(f"{FOLDER}/riga_modified.osm"):
-            modify_osm()
-            print("Modified: riga.osm")
+        # 7. modificē OSM failu, lai izlabotu neeksistējošos maksimālos ātrumus:
+        if not os.path.exists(f"{FOLDER}/map_modified.osm"):
+            modify_osm(FOLDER, "map_filtered.osm", "map_modified.osm")
+            print("Modified the map: map_modified.osm")
 
-        # 6. iegūst SUMO tīkla failu:
-        if not os.path.exists(f"{FOLDER}/riga.net.xml"):
+        # 8. iegūst SUMO tīkla failu:
+        if not os.path.exists(f"{FOLDER}/map_network.net.xml"):
             if shutil.which("netconvert"):
-                # cmd = [
-                #     "netconvert",
-                #     "--osm-files",
-                #     "riga_modified.osm",
-                #     "--output-file",
-                #     "riga.net.xml",
-                #     "--keep-edges.by-vclass",
-                #     "delivery",
-                #     "--remove-edges.isolated",
-                #     "--remove-edges.explicit",
-                #     "unused",
-                #     "--junctions.join",
-                #     "--edges.join",
-                #     "--ramps.guess",
-                #     "--tls.guess-signals",
-                #     "--tls.join",
-                #     "--geometry.remove",
-                #     "--speed-in-kmh",
-                # ]
-
                 cmd = [
                     "netconvert",
                     "--osm-files",
-                    f"{FOLDER}/riga_modified.osm",
+                    f"{FOLDER}/map_modified.osm",
                     "-o",
-                    f"{FOLDER}/riga.net.xml",
+                    f"{FOLDER}/map_network.net.xml",
                     "--geometry.remove",
                     "--ramps.guess",
                     "--junctions.join",
@@ -99,13 +110,13 @@ if __name__ == "__main__":
                 print("ERROR: SUMO is not installed")
                 sys.exit()
 
-        # 7. filtrē tikai ēkas
+        # 9. filtrē tikai ēkas
         if not os.path.exists(f"{FOLDER}/buildings.poly.xml"):
             if shutil.which("polyconvert"):
                 cmd = [
                     "polyconvert",
                     "--osm-files",
-                    f"{FOLDER}/riga_modified.osm",
+                    f"{FOLDER}/map_modified.osm",
                     "-o",
                     f"{FOLDER}/buildings.poly.xml",
                     "--discard",
@@ -117,7 +128,7 @@ if __name__ == "__main__":
                 print("ERROR: SUMO is not installed")
                 sys.exit()
 
-        # 8. nevajadzīgo failu izdzēšana:
+        # 10. nevajadzīgo failu izdzēšana:
         # os.remove(f"{FOLDER}/latvia-latest.osm.pbf")
         # os.remove(f"{FOLDER}/riga.poly")
         # os.remove(f"{FOLDER}/riga.osm")

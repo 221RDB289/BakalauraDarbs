@@ -27,7 +27,7 @@ def db_update(sql):
     conn.close()
 
 
-# funkcijas, kurām vajag norādīt jau gatavu datubāzes savienojumu:
+# funkcijas, kurām vajag norādīt jau gatavu datubāzes savienojumu - tā var ātrāk veikt vairākas izmaiņas pēc kārtas:
 
 
 def db_get2(sql, conn):
@@ -65,8 +65,15 @@ def db_create():
 
 
 if __name__ == "__main__":
+    # pirmo reizi izveido datubāzi:
     if not os.path.exists(FILENAME):
         folder = FILENAME.split("/")[0]
         if not os.path.exists(folder):
             os.mkdir(folder)
         db_create()
+    # izvada datus:
+    sql = "SELECT * FROM locations;"
+    results = db_get(sql)
+    if results:
+        for r in results:
+            print(r)

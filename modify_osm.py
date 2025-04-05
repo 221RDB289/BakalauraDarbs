@@ -1,9 +1,8 @@
 import xml.etree.ElementTree as ET
 
-FOLDER = "simulation_files"
 
-def modify_osm():
-    tree = ET.parse(f"{FOLDER}/riga.osm")
+def modify_osm(FOLDER, input_file, output_file):
+    tree = ET.parse(f"{FOLDER}/{input_file}")
     root = tree.getroot()
 
     # pievieno trūkstošās maksimālā braukšanas ātruma "maxspeed" vērtības:
@@ -38,8 +37,11 @@ def modify_osm():
                 way.append(tag)
 
     # saglabā modificēto failu utf-8 formātā
-    tree.write(f"{FOLDER}/riga_modified.osm", encoding="utf-8", xml_declaration=True)
+    tree.write(f"{FOLDER}/{output_file}", encoding="utf-8", xml_declaration=True)
 
 
 if __name__ == "__main__":
-    modify_osm()
+    FOLDER = "simulation_files"
+    input_file = "map_filtered.osm"
+    output_file = "map_modified.osm"
+    modify_osm(FOLDER, input_file, output_file)
