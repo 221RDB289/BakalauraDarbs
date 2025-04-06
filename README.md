@@ -14,5 +14,6 @@
 - `pip install pyproj`
 - `pip install rtree`
 - `pip install overpy`
+- `pip install osmium`
 ## Var arī instalēt projektā lietotās bibliotēku versijas:
 - `pip install -r requirements.txt`
