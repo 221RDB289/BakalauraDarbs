@@ -6,51 +6,55 @@ import sys
 from modify_osm import *
 
 FOLDER = "simulation_files"
+TEMP = "temp_files"
 STATIC = "static_files"
 
 if __name__ == "__main__":
-    # izveido mapi, ja tā neeksistē:
+    # izveido mapes, ja tās neeksistē:
     if not os.path.exists(FOLDER):
         os.mkdir(FOLDER)
+    if not os.path.exists(TEMP):
+        os.mkdir(TEMP)
+
     # izveido failus, ja tādi neeksistē:
     if not os.path.exists(f"{FOLDER}/map_network.net.xml"):
         # 1. iegūst Latvijas mapi no geofabrik:
-        if not os.path.exists(f"{FOLDER}/latvia-latest.osm.pbf"):
+        if not os.path.exists(f"{TEMP}/latvia-latest.osm.pbf"):
             urllib.request.urlretrieve(
                 "https://download.geofabrik.de/europe/latvia-latest.osm.pbf",
-                f"{FOLDER}/latvia-latest.osm.pbf",
+                f"{TEMP}/latvia-latest.osm.pbf",
             )
             print("Downloaded: latvia-latest.osm.pbf")
 
         # 2. iegūst Rīgas reģiona robežas:
-        if not os.path.exists(f"{FOLDER}/riga.poly"):
+        if not os.path.exists(f"{TEMP}/riga.poly"):
             urllib.request.urlretrieve(
                 "https://polygons.openstreetmap.fr/get_poly.py?id=13048688&params=0",
-                f"{FOLDER}/riga.poly",
+                f"{TEMP}/riga.poly",
             )
             print("Downloaded: riga.poly")
 
         # 3. iegūst Mārupes pagasta reģiona robežas:
-        if not os.path.exists(f"{FOLDER}/marupe.poly"):
+        if not os.path.exists(f"{TEMP}/marupe.poly"):
             urllib.request.urlretrieve(
                 "https://polygons.openstreetmap.fr/get_poly.py?id=13048774&params=0",
-                f"{FOLDER}/marupe.poly",
+                f"{TEMP}/marupe.poly",
             )
             print("Downloaded: marupe.poly")
 
         # 4. apvieno robežas:
-        if not os.path.exists(f"{FOLDER}/combined.poly"):
+        if not os.path.exists(f"{TEMP}/combined.poly"):
             # nolasa un apvieno datus no robežu failiem:
-            with open(f"{FOLDER}/riga.poly", mode="r", encoding="utf-8") as f:
+            with open(f"{TEMP}/riga.poly", mode="r", encoding="utf-8") as f:
                 combined = f.read().rsplit("\n", 2)[
                     0
                 ]  # noņem pēdējās 2 līnijas no faila
-            with open(f"{FOLDER}/marupe.poly", mode="r", encoding="utf-8") as f:
+            with open(f"{TEMP}/marupe.poly", mode="r", encoding="utf-8") as f:
                 combined += (
                     "\n2\n" + f.read().split("\n", 2)[2]
                 )  # pievieno 1 līniju un noņem pirmās 2 līnijas no faila
             # izveido apvienoto robežu failu:
-            with open(f"{FOLDER}/combined.poly", mode="w", encoding="utf-8") as f:
+            with open(f"{TEMP}/combined.poly", mode="w", encoding="utf-8") as f:
                 f.write(combined)
             print("Combined polygons: combined.poly")
 
@@ -61,21 +65,21 @@ if __name__ == "__main__":
             sys.exit()
 
         # 6. filtrē izvēlētos reģionus no Latvijas OSM faila:
-        if not os.path.exists(f"{FOLDER}/map_filtered.osm"):
+        if not os.path.exists(f"{TEMP}/map_filtered.osm"):
             cmd = [
                 osmosis,
                 "--read-pbf-fast",
-                f"file={FOLDER}/latvia-latest.osm.pbf",
+                f"file={TEMP}/latvia-latest.osm.pbf",
                 "--bounding-polygon",
-                f"file={FOLDER}/combined.poly",
+                f"file={TEMP}/combined.poly",
                 "--write-xml",
-                f"file={FOLDER}/map_filtered.osm",
+                f"file={TEMP}/map_filtered.osm",
             ]
             subprocess.run(cmd)
 
         # 7. modificē OSM failu, lai izlabotu neeksistējošos maksimālos ātrumus:
-        if not os.path.exists(f"{FOLDER}/map_modified.osm"):
-            modify_osm(FOLDER, "map_filtered.osm", "map_modified.osm")
+        if not os.path.exists(f"{TEMP}/map_modified.osm"):
+            modify_osm(TEMP, "map_filtered.osm", "map_modified.osm")
             print("Modified the map: map_modified.osm")
 
         # 8. iegūst SUMO tīkla failu:
@@ -84,7 +88,7 @@ if __name__ == "__main__":
                 cmd = [
                     "netconvert",
                     "--osm-files",
-                    f"{FOLDER}/map_modified.osm",
+                    f"{TEMP}/map_modified.osm",
                     "-o",
                     f"{FOLDER}/map_network.net.xml",
                     "--geometry.remove",
@@ -113,7 +117,7 @@ if __name__ == "__main__":
                 cmd = [
                     "polyconvert",
                     "--osm-files",
-                    f"{FOLDER}/map_modified.osm",
+                    f"{TEMP}/map_modified.osm",
                     "-o",
                     f"{FOLDER}/buildings.poly.xml",
                     "--discard",

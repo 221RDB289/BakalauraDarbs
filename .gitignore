@@ -2,4 +2,5 @@
 __pycache__
 routes.rou.xml
 simulation_files
+temp_files
 output
