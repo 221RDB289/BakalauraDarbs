@@ -6,6 +6,17 @@
 5. Jālejupielādē šī [github repozitorijs](https://github.com/221RDB289/BakalauraDarbs/archive/refs/heads/main.zip)
 6. Jāatver repozitoriju cmd terminālī un jāizpilda komanda `python get_osm.py`
 
+wsl --install
+restart
+wsl.exe --install Ubuntu
+wsl.exe -d Ubuntu
+
+sudo apt update
+sudo apt install osmium-tool
+osmium extract -p combined.poly latvia-latest.osm.pbf -o map.osm
+
+
+
 # Python bibliotēkas simulācijām un optimizācijām:
 ## Izmantotās bibliotēkas:
 - `pip install traci`
@@ -15,5 +26,6 @@
 - `pip install rtree`
 - `pip install overpy`
 - `pip install osmium`
+- `pip install shapely`
 ## Var arī instalēt projektā lietotās bibliotēku versijas:
 - `pip install -r requirements.txt`
