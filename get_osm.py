@@ -5,7 +5,7 @@ import shutil
 import sys
 from modify_osm import *
 
-FOLDER = "simulation_files2"
+FOLDER = "simulation_files"
 STATIC = "static_files"
 
 if __name__ == "__main__":
@@ -30,10 +30,10 @@ if __name__ == "__main__":
             )
             print("Downloaded: riga.poly")
 
-        # 3. iegūst Mārupes reģiona robežas:
+        # 3. iegūst Mārupes pagasta reģiona robežas:
         if not os.path.exists(f"{FOLDER}/marupe.poly"):
             urllib.request.urlretrieve(
-                "https://polygons.openstreetmap.fr/get_poly.py?id=300035&params=0",
+                "https://polygons.openstreetmap.fr/get_poly.py?id=13048774&params=0",
                 f"{FOLDER}/marupe.poly",
             )
             print("Downloaded: marupe.poly")
@@ -68,9 +68,6 @@ if __name__ == "__main__":
                 f"file={FOLDER}/latvia-latest.osm.pbf",
                 "--bounding-polygon",
                 f"file={FOLDER}/combined.poly",
-                "completeWays=yes",
-                "completeRelations=yes",
-                "cascadingRelations=yes",
                 "--write-xml",
                 f"file={FOLDER}/map_filtered.osm",
             ]
