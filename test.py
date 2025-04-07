@@ -37,17 +37,11 @@ if __name__ == "__main__":
     no koordinātēm iegūst tuvāko objektu OSM mapē:
     - "around" vērtība ir rādius metros
     """
-    # result = overpass.query(
-    #     f"""
-    # way(around:10,{lat},{long});
-    # out body;
-    # """
-    # )
-
     result = overpass.query(
         f"""
-    rel(around:50,{lat},{long});
+    way(around:10,{lat},{long});
     out body;
     """
     )
-    print(result.ways)
+    # tuvākais ceļš:
+    print(result.ways[0].id)

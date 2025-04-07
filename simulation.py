@@ -6,7 +6,7 @@ def run_simulation():
     traci.start(cmd)
 
     step = 0
-    while step < 10000:  # 10x vairāk soļi, jo cfg failā 1 solis = 0.1
+    while step < 1000:
         traci.simulationStep()
         step += 1
 

@@ -41,7 +41,7 @@ def modify_osm(FOLDER, input_file, output_file):
 
 
 if __name__ == "__main__":
-    FOLDER = "simulation_files"
+    TEMP = "temp_files"
     input_file = "map_filtered.osm"
     output_file = "map_modified.osm"
-    modify_osm(FOLDER, input_file, output_file)
+    modify_osm(TEMP, input_file, output_file)

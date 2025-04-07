@@ -17,7 +17,7 @@ if __name__ == "__main__":
         os.mkdir(TEMP)
 
     # izveido failus, ja tādi neeksistē:
-    if not os.path.exists(f"{FOLDER}/map_network.net.xml"):
+    if not os.path.exists(f"{FOLDER}/map.net.xml"):
         # 1. iegūst Latvijas mapi no geofabrik:
         if not os.path.exists(f"{TEMP}/latvia-latest.osm.pbf"):
             urllib.request.urlretrieve(
@@ -83,14 +83,14 @@ if __name__ == "__main__":
             print("Modified the map: map_modified.osm")
 
         # 8. iegūst SUMO tīkla failu:
-        if not os.path.exists(f"{FOLDER}/map_network.net.xml"):
+        if not os.path.exists(f"{FOLDER}/map.net.xml"):
             if shutil.which("netconvert"):
                 cmd = [
                     "netconvert",
                     "--osm-files",
                     f"{TEMP}/map_modified.osm",
                     "-o",
-                    f"{FOLDER}/map_network.net.xml",
+                    f"{FOLDER}/map.net.xml",
                     "--geometry.remove",
                     "--ramps.guess",
                     "--junctions.join",
