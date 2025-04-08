@@ -23,3 +23,5 @@
 - `pip install shapely`
 ## Var arī instalēt projektā lietotās bibliotēku versijas:
 - `pip install -r requirements.txt`
+# Adrešu dati
+Rīgas adreses un koordinātas tika iegūtas no [data.gov.lv](https://data.gov.lv/dati/lv/dataset/rigas-ielas-un-adreses)
