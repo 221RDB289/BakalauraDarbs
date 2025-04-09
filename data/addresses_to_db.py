@@ -11,6 +11,7 @@ def addresses_to_db(input_file):
     tree = ET.parse(f"{FOLDER}/{input_file}")
     root = tree.getroot()
     values = []
+    print(f"TRANSFERING: {input_file} data to the database")
     conn = db_create_connection()
 
     # pievieno trūkstošās maksimālā braukšanas ātruma "maxspeed" vērtības:
@@ -31,6 +32,7 @@ def addresses_to_db(input_file):
             db_update2(sql=sql, conn=conn)
             values.append((address, latitude, longitude))
     conn.close()
+    print(f"TRANSFER COMPLETED")
 
 
 if __name__ == "__main__":

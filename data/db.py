@@ -58,15 +58,20 @@ def db_create_connection():
     return conn
 
 
+# edge = tuvākā ceļa gala id:
 def db_create():
     sql = """
     CREATE TABLE locations(
         address TEXT PRIMARY KEY,
         latitude REAL NOT NULL,
-        longitude REAL NOT NULL
+        longitude REAL NOT NULL,
+        x REAL,
+        y REAL,
+        edge TEXT
     );
     """
     db_update(sql)
+    print("DATABASE CREATED")
 
 
 if __name__ == "__main__":
@@ -81,6 +86,8 @@ if __name__ == "__main__":
     sql = "SELECT * FROM locations;"
     results = db_get(sql)
     print("NUMBER OF ROWS:", len(results))
-    # if results:
-    #     for r in results:
-    #         print(r)
+
+    # testi:
+    sql = "SELECT * FROM locations WHERE edge!='';"
+    results = db_get(sql)
+    print("NUMBER OF ROWS:", len(results))
