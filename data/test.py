@@ -1,6 +1,7 @@
 import overpy
 from geopy.geocoders import Nominatim
 from db import *
+from sumolib import net
 
 """
 iegūst koorinātes no adreses:
@@ -31,17 +32,76 @@ if __name__ == "__main__":
     latitude, longitude = address_to_coordinates(geolocator, "Plieņciema iela 35")
     print(latitude, longitude)
 
-    overpass = overpy.Overpass()
-
     """
     no koordinātēm iegūst tuvāko objektu OSM mapē:
     - "around" vērtība ir rādius metros
     """
-    result = overpass.query(
-        f"""
-    way(around:10,{latitude},{longitude});
-    out body;
-    """
-    )
-    # tuvākais ceļš:
-    print(result.ways[0].id)
+
+    # overpass = overpy.Overpass()
+
+    # result = overpass.query(
+    #     f"""
+    # way(around:10,{latitude},{longitude});
+    # out body;
+    # """
+    # )
+    # print(result.ways[0].id)
+
+    # result = overpass.query(
+    #     f"""
+    # node(around:10,{latitude},{longitude});
+    # out body;
+    # """
+    # )
+    # # tuvākais node:
+    # node_id = result.nodes[0].id
+    # print(node_id)
+
+
+
+
+    # # atveram SUMO network failu:
+    # net_file = "simulation_files/map.net.xml"
+    # net = net.readNet(net_file)
+
+    # print('LOADED: map.net.xml')
+
+    # # node = net.getNode(str(node_id))
+    # node = net.getClosestNode(longitude, latitude)
+    # print(node)
+    # # atrod tuvāko ielu x metru attālumā:
+    # edges = node.getOutgoing()
+    # print(edges)
+    # edges = net.getNeighboringEdges(longitude, latitude, 1000)
+    # print(edges)
+
+    # # atrod tuvāko
+    # if nearest:
+    #     distance, edge = nearest[0]
+    #     print(f"Closest edge ID: {edge.getID()}")
+    # else:
+    #     print("No edge found nearby.")
+
+
+
+
+
+
+
+    # atveram SUMO network mapes failu:
+    net_file = "simulation_files/map.net.xml"
+    net = net.readNet(net_file)
+
+    print('LOADED: map.net.xml')
+
+    # pārveido koordinātas uz x un y vērtībām failā un izvēlas tuvākos ceļus:
+    radius = 50
+    x, y = net.convertLonLat2XY(longitude, latitude)
+    edges = net.getNeighboringEdges(x, y, radius)
+    print(len(edges))
+    # izvēlas pašu tuvāko ceļu:
+    if len(edges) > 0:
+        distancesAndEdges = sorted([(dist, edge) for edge, dist in edges], key=lambda x:x[0])
+        dist, closestEdge = distancesAndEdges[0]
+        print(dist, closestEdge)
+        print(closestEdge._id)
