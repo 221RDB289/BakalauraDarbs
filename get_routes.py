@@ -55,7 +55,7 @@ def create_courier_routes():
                 "-n",
                 f"{FOLDER}/map.net.xml",
                 "--route-files",
-                f"{FOLDER}/courier.trips.xml",
+                f"courier.trips.xml",
                 "-o",
                 f"{FOLDER}/courier.rou.xml",
             ]
