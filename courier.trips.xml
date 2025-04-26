@@ -1,15 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
   <vType id="myCourier" maxSpeed="160" vClass="delivery"/>
-  <trip id="courier_test_long" type="myCourier" depart="0" from="-908811053" to="-124457046">
-    <stop edge="124457046" endPos="5" parking="true" duration="60"/>
+  <trip id="courier_1" type="myCourier" depart="0" from="-908811053" to="-908811053">
+    <stop lane="-209653092#1_0" endPos="80.07341948995081" parking="true" duration="60"/>
+    <stop lane="44450563#1_0" endPos="2.0575431181932182" parking="true" duration="60"/>
   </trip>
-  <trip id="courier_test1" type="myCourier" depart="0" from="-124457046" to="-124457046">
-    <stop edge="-124457046" endPos="30" parking="true" duration="60" />
-  </trip>
-  <trip id="courier_test2" type="myCourier" depart="6" from="-124457046" to="-124457046">
-    <stop edge="-124457046" startPos="70" endPos="30" parking="true" duration="60" />
-  </trip>
-  <trip id="courier_test3" type="myCourier" depart="12" from="-124457046" to="-124457046">
-    <stop edge="-124457046" endPos="120" parking="true" duration="60" />
+  <trip id="courier_test" type="myCourier" depart="0" from="-124457046" to="-124457046">
+    <stop lane="-124457046_0" endPos="67.01025892847616" parking="true" duration="60"/>
   </trip>
 </routes>

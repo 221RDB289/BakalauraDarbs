@@ -58,7 +58,8 @@ def db_create_connection():
     return conn
 
 
-# edge = tuvākā ceļa gala id:
+# lane = tuvākā ceļa id:
+# pos = atrašanās vieta uz ceļa
 def db_create():
     sql = """
     CREATE TABLE locations(
@@ -67,7 +68,8 @@ def db_create():
         longitude REAL NOT NULL,
         x REAL,
         y REAL,
-        edge TEXT
+        lane TEXT,
+        pos REAL
     );
     """
     db_update(sql)
@@ -88,6 +90,6 @@ if __name__ == "__main__":
     print("NUMBER OF ROWS:", len(results))
 
     # testi:
-    sql = "SELECT * FROM locations WHERE edge!='';"
+    sql = "SELECT * FROM locations WHERE lane!='';"
     results = db_get(sql)
     print("NUMBER OF ROWS:", len(results))
