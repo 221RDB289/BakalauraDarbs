@@ -93,3 +93,6 @@ if __name__ == "__main__":
     sql = "SELECT * FROM locations WHERE lane!='';"
     results = db_get(sql)
     print("NUMBER OF ROWS:", len(results))
+
+    print(len(db_get("SELECT * FROM locations WHERE lane IS NOT NULL AND address!='Plieņciema iela 35'")))
+    

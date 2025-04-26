@@ -7,6 +7,7 @@ from ortools.constraint_solver import pywrapcp
 from geopy.geocoders import Nominatim
 from db import *
 from sumolib import net
+import xml.etree.ElementTree as ET
 
 
 # izvada sākuma/beigu (piegādes noliktavas) koordinātas no SUMO tīkla faila:
@@ -81,6 +82,59 @@ def get_random_locations(x):
     return results
 
 
+# izveido kurjera maršrutu failu:
+def create_courier_route_file(addresses, stops):
+    root = ET.Element(
+        "routes",
+        {
+            "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+            "xsi:noNamespaceSchemaLocation": "http://sumo.dlr.de/xsd/routes_file.xsd",
+        },
+    )
+
+    # transportlīdzekļa tips:
+    vType = ET.SubElement(
+        root, "vType", {"id": "myCourier", "maxSpeed": "160", "vClass": "delivery"}
+    )
+
+    # kurjera maršruts:
+    trip1 = ET.SubElement(
+        root,
+        "trip",
+        {
+            "id": "courier_1",
+            "type": "myCourier",
+            "depart": "0",
+            "from": "-908811053",
+            "to": "-908811053",
+        },
+    )
+
+    # piegādes punkti:
+    for stop_index in stops:
+        address, latitude, longitude, x, y, lane, pos = addresses[
+            stop_index - 1
+        ]  # -1, jo noliktava sarakstā neietilpst
+        # if pos == 0:
+        #     print(pos)
+        #     pos = 1
+        ET.SubElement(
+            trip1,
+            "stop",
+            {
+                "lane": lane,
+                "endPos": f"{pos}",
+                "parking": "true",
+                "duration": "60",
+                "friendlyPos": "true",
+            },
+        )
+
+    # saglabā failu:
+    tree = ET.ElementTree(root)
+    tree.write("optimized_courier.trips.xml", encoding="UTF-8", xml_declaration=True)
+
+
 def get_solution():
     x = 100
     addresses = get_random_locations(x)
@@ -115,14 +169,20 @@ def get_solution():
     # iegūst atrisinājumu pēc dotajiem meklēšanas parametriem:
     solution = routing.SolveWithParameters(search_parameters)
 
+    # saglabā maršrutu adrešu indeksu saraksta formā:
     stops = []
     index = routing.Start(0)
     while not routing.IsEnd(index):
         stops.append(manager.IndexToNode(index))
         index = solution.Value(routing.NextVar(index))
     stops.pop(0)  # noņem 1. vērtību, jo tā ir noliktava
-    print(stops)
-    print(len(stops))
+
+    # izveido kurjera maršrutu failu:
+    create_courier_route_file(addresses, stops)
+
+    # print(stops)
+    # print(len(stops))
+    # print(len(addresses))
 
 
 if __name__ == "__main__":

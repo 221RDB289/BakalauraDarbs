@@ -78,5 +78,5 @@ def read_packages_from_file(filename):
 
 if __name__ == "__main__":
     addresses = db_get(f"SELECT * FROM locations where lane is Null;")
-    filtered_addresses = lanes_to_db(addresses, 100)
+    filtered_addresses = lanes_to_db(addresses, 50)
     # filtered_addresses = lanes_to_db(addresses, 1000) # ja vajag visām adresēm (testa brīdī 437 adresēm nevarēja atrast tuvāko ceļu ar 100 metru rādiusu)
