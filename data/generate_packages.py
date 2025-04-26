@@ -6,13 +6,13 @@ FODLER = "data"
 
 
 # pievieno tuvākos ceļa galus adresēm un izvada tās adreses, kurām varēja atrast tuvāko ceļa galu:
-def lanes_to_db(addresses):
+# radius = tuvuma rādiuss metros
+def lanes_to_db(addresses, radius=100):
     print(f"FINDING LANES FOR {len(addresses)} ADDRESSES")
     # atveram SUMO network mapes failu:
     network_file = "simulation_files/map.net.xml"
     network = net.readNet(network_file)
     print("LOADED: map.net.xml")
-    radius = 100  # tuvuma rādiuss metros
     conn = db_create_connection()
     filetered_addresses = []
 
@@ -77,15 +77,6 @@ def read_packages_from_file(filename):
 
 
 if __name__ == "__main__":
-    # nejaušā veidā izvēlās x skaitu adreses un to koordinātas no datubāzes:
-    x = 100
-    filename = "packages.csv"
-    addresses = get_random_locations(x)
-
-    # filtrē pēc ceļa galiem:
-    filtered_addresses = lanes_to_db(addresses)
-    save_packages_to_file(filename, filtered_addresses)
-
-    # izlasa paciņu datos no faila
-    addresses = read_packages_from_file(filename)
-    # print(addresses)
+    addresses = db_get(f"SELECT * FROM locations where lane is Null;")
+    filtered_addresses = lanes_to_db(addresses, 100)
+    # filtered_addresses = lanes_to_db(addresses, 1000) # ja vajag visām adresēm (testa brīdī 437 adresēm nevarēja atrast tuvāko ceļu ar 100 metru rādiusu)
