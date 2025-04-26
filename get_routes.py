@@ -40,6 +40,27 @@ def create_random_routes():
                 f"{FOLDER}/other.rou.xml",
             ]
             subprocess.run(cmd)
+            print("CREATED random routes")
+    else:
+        print("ERROR: SUMO is not installed")
+        sys.exit()
+
+
+# kurjeru maršruti:
+def create_courier_routes():
+    if shutil.which("duarouter"):
+        if not os.path.exists(f"{FOLDER}/courier.rou.xml"):
+            cmd = [
+                "duarouter",
+                "-n",
+                f"{FOLDER}/map.net.xml",
+                "--route-files",
+                f"{FOLDER}/courier.trips.xml",
+                "-o",
+                f"{FOLDER}/courier.rou.xml",
+            ]
+            subprocess.run(cmd)
+            print("CREATED courier routes")
     else:
         print("ERROR: SUMO is not installed")
         sys.exit()
@@ -47,3 +68,4 @@ def create_random_routes():
 
 if __name__ == "__main__":
     create_random_routes()
+    create_courier_routes()

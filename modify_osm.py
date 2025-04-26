@@ -6,6 +6,7 @@ def modify_osm(FOLDER, input_file, output_file):
     root = tree.getroot()
 
     # pievieno trūkstošās maksimālā braukšanas ātruma "maxspeed" vērtības:
+    # i=0
     for way in root.iter("way"):
         for tag in way.iter("tag"):
             # ja ir "maxspeed":
@@ -24,6 +25,7 @@ def modify_osm(FOLDER, input_file, output_file):
                     or tag.attrib["v"] == "LV:trunk"
                 ):
                     new_tag.set("v", "50")
+                    # print(tag.attrib["v"])
 
                 # pieņemam, ka pārējās kategorijas ir skaitliskas vērtības
                 else:
@@ -35,6 +37,7 @@ def modify_osm(FOLDER, input_file, output_file):
                 way.remove(tag)
                 way.append(new_tag)
                 way.append(tag)
+    # print(i)
 
     # saglabā modificēto failu utf-8 formātā
     tree.write(f"{FOLDER}/{output_file}", encoding="utf-8", xml_declaration=True)
