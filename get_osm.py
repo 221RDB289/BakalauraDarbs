@@ -3,13 +3,115 @@ import subprocess
 import os
 import shutil
 import sys
-from modify_osm import *
+import xml.etree.ElementTree as ET
+
+# robežām:
+from shapely.geometry import Polygon
+from shapely.ops import transform, unary_union
+import pyproj
+
 
 FOLDER = "simulation_files"
 TEMP = "temp_files"
 STATIC = "static_files"
 
-if __name__ == "__main__":
+
+# ----------------------------------------------------------------------------------------------------------------------------------
+# modificē OSM failu pārveidojot ielu maksimālos braukšanas ātrumus uz sklaitliskām vērtībām, kur tas ir nepieciešams:
+# ----------------------------------------------------------------------------------------------------------------------------------
+def modify_osm(FOLDER, input_file, output_file):
+    tree = ET.parse(f"{FOLDER}/{input_file}")
+    root = tree.getroot()
+
+    # pievieno trūkstošās maksimālā braukšanas ātruma "maxspeed" vērtības:
+    # i=0
+    for way in root.iter("way"):
+        for tag in way.iter("tag"):
+            # ja ir "maxspeed":
+            if tag.attrib.get("k") == "maxspeed":
+                break
+            # pievieno "maxspeed" vērtību:
+            if tag.attrib.get("k") == "maxspeed:type":
+                new_tag = ET.Element("tag")
+                new_tag.set("k", "maxspeed")
+
+                # urban = 50 km/h
+                # pieņemam, ka Rīgā "rural" un "trunk" kategorijām arī limits ir 50 km/h
+                if (
+                    tag.attrib["v"] == "LV:urban"
+                    or tag.attrib["v"] == "LV:rural"
+                    or tag.attrib["v"] == "LV:trunk"
+                ):
+                    new_tag.set("v", "50")
+                    # print(tag.attrib["v"])
+
+                # pieņemam, ka pārējās kategorijas ir skaitliskas vērtības
+                else:
+                    # katram gadījumam izprintējam vērtību terminālī
+                    print(f'INFO: tag.attrib["v"] = {tag.attrib["v"]}')
+                    new_tag.set("v", tag.attrib["v"])
+
+                # noņemam arī pašreizējo vērtību, lai maksimālais ātrums būtu pirms vecās vērtības
+                way.remove(tag)
+                way.append(new_tag)
+                way.append(tag)
+    # print(i)
+
+    # saglabā modificēto failu utf-8 formātā
+    tree.write(f"{FOLDER}/{output_file}", encoding="utf-8", xml_declaration=True)
+
+
+# ----------------------------------------------------------------------------------------------------------------------------------
+# funkcijas darbībām ar robežām:
+# ----------------------------------------------------------------------------------------------------------------------------------
+
+
+# izvada Polgon objektu no .poly faila:
+def read_poly(filepath):
+    coordinates = []
+    with open(filepath, "r") as f:
+        lines = f.readlines()[2:-2]  # izņemot pirmās 2 un pēdējās 2 līnijas
+    for line in lines:
+        temp = line.strip().split(" ")
+        longitude = temp[0]
+        latitude = temp[-1]
+        coordinates.append((longitude, latitude))
+    return Polygon(coordinates)
+
+
+# palielina poly objektu par "extended_distance_meters" metriem uz āru:
+def buffer_polygon(poly, extended_distance_meters=3500):
+    # pārveido koordinātas uz metriem saprotamām vērtībām:
+    project = pyproj.Transformer.from_crs(
+        "EPSG:4326", "EPSG:3857", always_xy=True
+    ).transform
+    poly_meters = transform(project, poly)
+
+    # palielina poly objektu par "extended_distance_meters" metriem uz āru:
+    poly_m_buffered = poly_meters.buffer(extended_distance_meters)
+
+    # pārveido atpakaļ uz koordinātām:
+    project_back = pyproj.Transformer.from_crs(
+        "EPSG:3857", "EPSG:4326", always_xy=True
+    ).transform
+    poly_buffered = transform(project_back, poly_m_buffered)
+
+    return poly_buffered
+
+
+# ieraksta Polygon objektu .poly failā:
+def write_poly(poly, filepath=f"{TEMP}/combined.poly"):
+    with open(filepath, "w") as f:
+        f.write("polygon\n1\n")
+        for longitude, latitude in poly.exterior.coords:
+            f.write(f"\t{longitude}\t{latitude}\n")
+        f.write("END\nEND\n")
+
+
+# ----------------------------------------------------------------------------------------------------------------------------------
+# SUMO tīkla faila pilns iegūšanas un apstrādes process:
+# ----------------------------------------------------------------------------------------------------------------------------------
+def get_osm():
     # izveido mapes, ja tās neeksistē:
     if not os.path.exists(FOLDER):
         os.mkdir(FOLDER)
@@ -42,21 +144,14 @@ if __name__ == "__main__":
             )
             print("Downloaded: marupe.poly")
 
-        # 4. apvieno robežas:
+        # 4. apvieno robežas, kā arī izpleš Rīgas robežu:
         if not os.path.exists(f"{TEMP}/combined.poly"):
-            # nolasa un apvieno datus no robežu failiem:
-            with open(f"{TEMP}/riga.poly", mode="r", encoding="utf-8") as f:
-                combined = f.read().rsplit("\n", 2)[
-                    0
-                ]  # noņem pēdējās 2 līnijas no faila
-            with open(f"{TEMP}/marupe.poly", mode="r", encoding="utf-8") as f:
-                combined += (
-                    "\n2\n" + f.read().split("\n", 2)[2]
-                )  # pievieno 1 līniju un noņem pirmās 2 līnijas no faila
-            # izveido apvienoto robežu failu:
-            with open(f"{TEMP}/combined.poly", mode="w", encoding="utf-8") as f:
-                f.write(combined)
-            print("Combined polygons: combined.poly")
+            riga_poly = read_poly(f"{TEMP}/riga.poly")
+            riga_poly_buffered = buffer_polygon(riga_poly)
+            marupe_poly = read_poly(f"{TEMP}/marupe.poly")
+            combined_poly = unary_union([riga_poly_buffered, marupe_poly])
+            write_poly(combined_poly)
+            print("Combined and modified polygons: combined.poly")
 
         # 5. iegūst "osmosis" atrašanās vietu:
         osmosis = shutil.which("osmosis")
@@ -139,8 +234,6 @@ if __name__ == "__main__":
                 print("ERROR: SUMO is not installed")
                 sys.exit()
 
-        # 10. nevajadzīgo failu izdzēšana:
-        # os.remove(f"{FOLDER}/latvia-latest.osm.pbf")
-        # os.remove(f"{FOLDER}/riga.poly")
-        # os.remove(f"{FOLDER}/riga.osm")
-        # os.remove(f"{FOLDER}/riga_modified.osm")
+
+if __name__ == "__main__":
+    get_osm()
