@@ -24,40 +24,52 @@ def modify_osm(FOLDER, input_file, output_file):
     root = tree.getroot()
 
     # pievieno trūkstošās maksimālā braukšanas ātruma "maxspeed" vērtības:
-    # i=0
+    i = 0
     for way in root.iter("way"):
         for tag in way.iter("tag"):
-            # ja ir "maxspeed":
+            # ja taga k vērtība ir "maxspeed":
             if tag.attrib.get("k") == "maxspeed":
-                break
-            # pievieno "maxspeed" vērtību:
+                # ja "maxspeed" ir skaitliska vērtība:
+                if tag.attrib["v"].isnumeric():
+                    break
+                # ja "maxspeed" nav skaitliska vērtība:
+                else:
+                    tag.set("v", "50")
+                    i += 1
+                    break
+            # ja ir norādīts tags ar k vērtību "maxspeed:type":
             if tag.attrib.get("k") == "maxspeed:type":
+                # izveido jaunu "maxspeed" tagu:
                 new_tag = ET.Element("tag")
                 new_tag.set("k", "maxspeed")
 
                 # urban = 50 km/h
-                # pieņemam, ka Rīgā "rural" un "trunk" kategorijām arī limits ir 50 km/h
+                # pieņemam, ka Rīgā "rural" un "trunk" kategorijām arī limits ir 50 km/h:
                 if (
                     tag.attrib["v"] == "LV:urban"
                     or tag.attrib["v"] == "LV:rural"
                     or tag.attrib["v"] == "LV:trunk"
                 ):
                     new_tag.set("v", "50")
-                    # print(tag.attrib["v"])
 
-                # pieņemam, ka pārējās kategorijas ir skaitliskas vērtības
+                # pieņemam, ka pārējās kategorijas ir skaitliskas vērtības:
                 else:
-                    # katram gadījumam izprintējam vērtību terminālī
-                    print(f'INFO: tag.attrib["v"] = {tag.attrib["v"]}')
-                    new_tag.set("v", tag.attrib["v"])
+                    if tag.attrib["v"].isnumeric():
+                        new_tag.set("v", tag.attrib["v"])
+                    else:
+                        print(
+                            f'ERROR: tag v="{tag.attrib["v"]}" is not a numeric value"'
+                        )
 
-                # noņemam arī pašreizējo vērtību, lai maksimālais ātrums būtu pirms vecās vērtības
+                # noņemam arī pašreizējo tagu, lai maksimālā ātruma tags būtu pirms maksimālā ātruma tipa:
                 way.remove(tag)
                 way.append(new_tag)
                 way.append(tag)
-    # print(i)
+                i += 1
+                break
 
-    # saglabā modificēto failu utf-8 formātā
+    print(f"MODIFIED: {i} cases")
+    # saglabā modificēto failu utf-8 formātā:
     tree.write(f"{FOLDER}/{output_file}", encoding="utf-8", xml_declaration=True)
 
 
@@ -147,7 +159,9 @@ def get_osm():
         # 4. apvieno robežas, kā arī izpleš Rīgas robežu:
         if not os.path.exists(f"{TEMP}/combined.poly"):
             riga_poly = read_poly(f"{TEMP}/riga.poly")
-            riga_poly_buffered = buffer_polygon(riga_poly)
+            riga_poly_buffered = buffer_polygon(
+                riga_poly, extended_distance_meters=5000
+            )  # + 5 km
             marupe_poly = read_poly(f"{TEMP}/marupe.poly")
             combined_poly = unary_union([riga_poly_buffered, marupe_poly])
             write_poly(combined_poly)
@@ -186,30 +200,18 @@ def get_osm():
                     f"{TEMP}/map_modified.osm",
                     "--output-file",
                     f"{FOLDER}/map.net.xml",
-                    "--geometry.remove",
-                    "true",
-                    "--ramps.guess",
-                    "true",
-                    "--junctions.join",
-                    "true",
-                    "--tls.guess-signals",
-                    "true",
-                    "--tls.discard-simple",
-                    "true",
-                    "--tls.join",
-                    "true",
-                    "--keep-edges.by-vclass",
-                    "delivery",
-                    "--remove-edges.isolated",
-                    "true",
-                    "--edges.join",
-                    "true",
-                    "--keep-edges.components",
-                    "1",
-                    "--speed-in-kmh",
-                    "true",
-                    "--output.street-names",
-                    "true",
+                    "--geometry.remove=true",
+                    "--ramps.guess=true",
+                    "--junctions.join=true",
+                    "--tls.guess-signals=true",
+                    "--tls.discard-simple=true",
+                    "--tls.join=true",
+                    "--keep-edges.by-vclass=delivery",
+                    "--remove-edges.isolated=true",
+                    "--edges.join=true",
+                    "--keep-edges.components=1",
+                    "--speed-in-kmh=true",
+                    "--output.street-names=true",
                 ]
                 subprocess.run(cmd)
             else:

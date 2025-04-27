@@ -39,8 +39,8 @@ def lanes_to_db(addresses, radius=100):
                 filetered_addresses.append(
                     p[0:2] + (x, y, lane_id, pos)
                 )  # (address, latitude, longitude, x,y,lane,pos)
-            else:
-                print(f'ERROR: lane not in range of "{p[0]}"')
+            # else:
+            #     print(f'ERROR: lane not in range of "{p[0]}"')
     conn.close()
     print(f"FOUND LANES FOR {len(filetered_addresses)} ADDRESSES")
     return filetered_addresses

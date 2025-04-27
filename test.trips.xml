@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <vType id="myCourier" maxSpeed="160" vClass="delivery" />
+    <trip id="courier_1" type="myCourier" depart="0" from="-908811053" to="-908811053">
+        <!-- <stop lane="-124457052#0" endPos="60.55691815892526" parking="true" duration="60" friendlyPos="true" /> -->
+        <stop lane="-43376762" endPos="60.55691815892526" parking="true" duration="60" friendlyPos="true" />
+        <!-- <stop lane="-124457052#0" endPos="60.55691815892526" parking="true" duration="60" friendlyPos="true" /> -->
+    </trip>
+</routes>

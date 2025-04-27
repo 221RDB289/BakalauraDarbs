@@ -48,6 +48,8 @@ def create_random_routes():
 
 # kurjeru maršruti:
 def create_courier_routes():
+    # TODO: jāizmanto --routing-algorithm https://sumo.dlr.de/docs/Simulation/Routing.html
+    # duarouter iestatījumi: https://sumo.dlr.de/docs/duarouter.html
     if shutil.which("duarouter"):
         if not os.path.exists(f"{FOLDER}/courier.rou.xml"):
             cmd = [
@@ -55,9 +57,12 @@ def create_courier_routes():
                 "-n",
                 f"{FOLDER}/map.net.xml",
                 "--route-files",
+                # f"test.trips.xml",
                 f"optimized_courier.trips.xml",
                 "-o",
                 f"{FOLDER}/courier.rou.xml",
+                "--verbose",
+                "true",
             ]
             subprocess.run(cmd)
             print("CREATED courier routes")
