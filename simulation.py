@@ -6,7 +6,7 @@ def run_simulation():
     traci.start(cmd)
 
     step = 0
-    while step < 1000:
+    while step < 28800:
         traci.simulationStep()
         step += 1
 
