@@ -55,7 +55,7 @@ def get_random_locations(x):
     return results
 
 
-# TODO: generate more package data?
+# TODO: ģenerēt citus papildus datus? - paciņu svars, ietilpība?
 
 
 def save_packages_to_file(filename, packages):

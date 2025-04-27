@@ -83,7 +83,8 @@ def get_random_locations(x):
 
 
 # izveido kurjera maršrutu failu:
-def create_courier_route_file(addresses, stops):
+# routes ir saraksts ar piegādes punktu sarakstiem (saraksts karam kurjeram):
+def create_courier_route_file(addresses, routes):
     root = ET.Element(
         "routes",
         {
@@ -97,38 +98,37 @@ def create_courier_route_file(addresses, stops):
         root, "vType", {"id": "myCourier", "maxSpeed": "160", "vClass": "delivery"}
     )
 
-    # kurjera maršruts:
-    trip1 = ET.SubElement(
-        root,
-        "trip",
-        {
-            "id": "courier_1",
-            "type": "myCourier",
-            "depart": "0",
-            "from": "-908811053",
-            "to": "-908811053",
-        },
-    )
+    for i, stops in enumerate(routes):
 
-    # piegādes punkti:
-    for stop_index in stops:
-        address, latitude, longitude, x, y, lane, pos = addresses[
-            stop_index - 1
-        ]  # -1, jo noliktava sarakstā neietilpst
-        # if pos == 0:
-        #     print(pos)
-        #     pos = 1
-        ET.SubElement(
-            trip1,
-            "stop",
+        # kurjera maršruts:
+        trip = ET.SubElement(
+            root,
+            "trip",
             {
-                "lane": lane,
-                "endPos": f"{pos}",
-                "parking": "true",
-                "duration": "60",
-                "friendlyPos": "true",
+                "id": f"courier_{i}",  # kurjera numurs
+                "type": "myCourier",
+                "depart": "0",
+                "from": "-908811053",
+                "to": "-908811053",
             },
         )
+
+        # piegādes punkti:
+        for stop_index in stops:
+            address, latitude, longitude, x, y, lane, pos = addresses[
+                stop_index - 1
+            ]  # -1, jo noliktava sarakstā neietilpst
+            ET.SubElement(
+                trip,
+                "stop",
+                {
+                    "lane": lane,
+                    "endPos": f"{pos}",
+                    "parking": "true",
+                    "duration": "60",
+                    "friendlyPos": "true",
+                },
+            )
 
     # saglabā failu:
     tree = ET.ElementTree(root)
@@ -138,7 +138,7 @@ def create_courier_route_file(addresses, stops):
 def get_solution():
     x = 100
     addresses = get_random_locations(x)
-    data = create_data_model(addresses)
+    data = create_data_model(addresses, 4)  # 4 kurjeri
 
     # maršrutu indeksēšanai:
     manager = pywrapcp.RoutingIndexManager(
@@ -160,6 +160,18 @@ def get_solution():
     # katram ceļam iegūst izmaksas:
     routing.SetArcCostEvaluatorOfAllVehicles(transit_callback_index)
 
+    # attāluma ierobežojumi:
+    dimension_name = "Distance"
+    routing.AddDimension(
+        transit_callback_index,
+        100000,  # daudzums par cik metriem kurjers var nobraukt papildus (pēc ierobežojuma)
+        100000,  # kurjera maksimālais atļautais nobrauktais attālums
+        True,  # sāk skaitīt no nulles
+        dimension_name,
+    )
+    distance_dimension = routing.GetDimensionOrDie(dimension_name)
+    distance_dimension.SetGlobalSpanCostCoefficient(100)
+
     # pirmā atrisinājuma heiristiska:
     search_parameters = pywrapcp.DefaultRoutingSearchParameters()
     search_parameters.first_solution_strategy = (
@@ -169,20 +181,27 @@ def get_solution():
     # iegūst atrisinājumu pēc dotajiem meklēšanas parametriem:
     solution = routing.SolveWithParameters(search_parameters)
 
-    # saglabā maršrutu adrešu indeksu saraksta formā:
-    stops = []
-    index = routing.Start(0)
-    while not routing.IsEnd(index):
-        stops.append(manager.IndexToNode(index))
-        index = solution.Value(routing.NextVar(index))
-    stops.pop(0)  # noņem 1. vērtību, jo tā ir noliktava
+    if solution:
+        # katram kurjeram/maršrutam saglabā adrešu indeksu sarakstu:
+        routes = []
+        for vehicle_id in range(data["num_vehicles"]):
+            if not routing.IsVehicleUsed(solution, vehicle_id):
+                continue
+            stops = []
+            index = routing.Start(vehicle_id)
+            while not routing.IsEnd(index):
+                stops.append(manager.IndexToNode(index))
+                index = solution.Value(routing.NextVar(index))
+            stops.pop(0)  # noņem 1. vērtību, jo tā ir noliktava
+            routes.append(stops)
 
-    # izveido kurjera maršrutu failu:
-    create_courier_route_file(addresses, stops)
+        for r in routes:
+            print(r)
 
-    # print(stops)
-    # print(len(stops))
-    # print(len(addresses))
+        # izveido kurjeru maršrutu failu:
+        create_courier_route_file(addresses, routes)
+    else:
+        print("ERROR: no solution found!")
 
 
 if __name__ == "__main__":
