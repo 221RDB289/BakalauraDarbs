@@ -69,7 +69,8 @@ def db_create():
         x REAL,
         y REAL,
         lane TEXT,
-        pos REAL
+        pos REAL,
+        used BOOL DEFAULT FALSE
     );
     """
     db_update(sql)

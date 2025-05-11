@@ -5,9 +5,9 @@ import math
 from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
 from geopy.geocoders import Nominatim
-from db import *
 from sumolib import net
 import xml.etree.ElementTree as ET
+from addresses import *
 
 
 # izvada sākuma/beigu (piegādes noliktavas) koordinātas no SUMO tīkla faila:
@@ -47,7 +47,7 @@ def create_data_model(addresses, num_vehicles=1):
     coordinates = [
         get_depot()
     ]  # sākuma/beigu (piegādes noliktava) ir 1. saraksta pozīcijā
-    for address, latitude, longitude, x, y, lane, pos in addresses:
+    for address, latitude, longitude, x, y, lane, pos, used in addresses:
         coordinates.append((x, y))
     data = {}
     data["coordinates"] = coordinates
@@ -115,7 +115,7 @@ def create_courier_route_file(addresses, routes):
 
         # piegādes punkti:
         for stop_index in stops:
-            address, latitude, longitude, x, y, lane, pos = addresses[
+            address, latitude, longitude, x, y, lane, pos, used = addresses[
                 stop_index - 1
             ]  # -1, jo noliktava sarakstā neietilpst
             ET.SubElement(
@@ -136,8 +136,7 @@ def create_courier_route_file(addresses, routes):
 
 
 def get_solution():
-    x = 100
-    addresses = get_random_locations(x)
+    addresses = get_random_addresses()
     data = create_data_model(addresses, 4)  # 4 kurjeri
 
     # maršrutu indeksēšanai:
@@ -172,10 +171,41 @@ def get_solution():
     distance_dimension = routing.GetDimensionOrDie(dimension_name)
     distance_dimension.SetGlobalSpanCostCoefficient(100)
 
-    # pirmā atrisinājuma heiristiska:
+    # search_parameters = pywrapcp.DefaultRoutingSearchParameters()
+    # https://developers.google.com/optimization/routing/routing_options
     search_parameters = pywrapcp.DefaultRoutingSearchParameters()
+    search_parameters.time_limit.seconds = (
+        60  # 1 minūtes laika limits risinājuma meklēšanai
+    )
+    # pirmā atrisinājuma (heiristikas) metode/algoritms:
+    """
+    routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC
+    routing_enums_pb2.FirstSolutionStrategy.PATH_MOST_CONSTRAINED_ARC
+    routing_enums_pb2.FirstSolutionStrategy.EVALUATOR_STRATEGY
+    routing_enums_pb2.FirstSolutionStrategy.SAVINGS
+    routing_enums_pb2.FirstSolutionStrategy.SWEEP
+    routing_enums_pb2.FirstSolutionStrategy.CHRISTOFIDES
+    routing_enums_pb2.FirstSolutionStrategy.ALL_UNPERFORMED
+    routing_enums_pb2.FirstSolutionStrategy.BEST_INSERTION
+    routing_enums_pb2.FirstSolutionStrategy.PARALLEL_CHEAPEST_INSERTION
+    routing_enums_pb2.FirstSolutionStrategy.LOCAL_CHEAPEST_INSERTION
+    routing_enums_pb2.FirstSolutionStrategy.GLOBAL_CHEAPEST_ARC
+    routing_enums_pb2.FirstSolutionStrategy.LOCAL_CHEAPEST_ARC
+    routing_enums_pb2.FirstSolutionStrategy.FIRST_UNBOUND_MIN_VALUE
+    """
     search_parameters.first_solution_strategy = (
         routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC
+    )
+    # lokālā atrisinājuma (metaheiristikas) metode/algoritms:
+    """
+    routing_enums_pb2.LocalSearchMetaheuristic.GREEDY_DESCENT
+    routing_enums_pb2.LocalSearchMetaheuristic.GUIDED_LOCAL_SEARCH
+    routing_enums_pb2.LocalSearchMetaheuristic.SIMULATED_ANNEALING
+    routing_enums_pb2.LocalSearchMetaheuristic.TABU_SEARCH
+    routing_enums_pb2.LocalSearchMetaheuristic.GENERIC_TABU_SEARCH
+    """
+    search_parameters.local_search_metaheuristic = (
+        routing_enums_pb2.LocalSearchMetaheuristic.GUIDED_LOCAL_SEARCH
     )
 
     # iegūst atrisinājumu pēc dotajiem meklēšanas parametriem:

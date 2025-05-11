@@ -2,7 +2,7 @@ import traci
 
 
 def run_simulation():
-    cmd = ["sumo", "-c", "riga.sumo.cfg"]
+    cmd = ["sumo", "-c", "riga.sumo.cfg", "--no-step-log=true"]
     traci.start(cmd)
 
     step = 0
