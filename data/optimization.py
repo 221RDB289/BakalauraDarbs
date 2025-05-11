@@ -1,13 +1,15 @@
 # noderīga informācija par ortools bibliotēku uz kā tika balstīts kods: https://developers.google.com/optimization/routing
 
-from db import *
+from data.db import *
 import math
 from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
 from geopy.geocoders import Nominatim
 from sumolib import net
 import xml.etree.ElementTree as ET
-from addresses import *
+from data.addresses import *
+
+FOLDER = "simulation_files"
 
 
 # izvada sākuma/beigu (piegādes noliktavas) koordinātas no SUMO tīkla faila:
@@ -75,13 +77,6 @@ def compute_euclidean_distance_matrix(locations):
     return distances
 
 
-# nejaušā veidā izvēlās x skaitu adreses un koordinātas
-def get_random_locations(x):
-    sql = f"SELECT * FROM locations WHERE lane IS NOT NULL AND address!='Plieņciema iela 35' ORDER BY RANDOM() LIMIT {x};"
-    results = db_get(sql=sql)
-    return results
-
-
 # izveido kurjera maršrutu failu:
 # routes ir saraksts ar piegādes punktu sarakstiem (saraksts karam kurjeram):
 def create_courier_route_file(addresses, routes):
@@ -132,10 +127,15 @@ def create_courier_route_file(addresses, routes):
 
     # saglabā failu:
     tree = ET.ElementTree(root)
-    tree.write("optimized_courier.trips.xml", encoding="UTF-8", xml_declaration=True)
+    tree.write(
+        f"{FOLDER}/optimized_courier.trips.xml", encoding="UTF-8", xml_declaration=True
+    )
 
 
 def get_solution():
+    if os.path.exists(f"{FOLDER}/optimized_courier.trips.xml"):
+        os.remove(f"{FOLDER}/optimized_courier.trips.xml")
+
     addresses = get_random_addresses()
     data = create_data_model(addresses, 4)  # 4 kurjeri
 
@@ -232,7 +232,3 @@ def get_solution():
         create_courier_route_file(addresses, routes)
     else:
         print("ERROR: no solution found!")
-
-
-if __name__ == "__main__":
-    get_solution()

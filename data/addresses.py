@@ -2,7 +2,7 @@
 
 from sumolib import net
 import xml.etree.ElementTree as ET
-from db import *
+from data.db import *
 
 FOLDER = "data"
 
@@ -111,7 +111,3 @@ def prapare_addresses(x):
         filtered_addresses = lanes_to_db(addresses, 50)
         # filtered_addresses = lanes_to_db(addresses, 1000) # ja vajag visām adresēm (testa brīdī 437 adresēm nevarēja atrast tuvāko ceļu ar 100 metru rādiusu)
         random_addresses = get_random_addresses(new=True, x=x)
-
-
-if __name__ == "__main__":
-    prapare_addresses(100)

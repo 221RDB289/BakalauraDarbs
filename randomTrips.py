@@ -28,6 +28,8 @@ import subprocess
 from collections import defaultdict
 import math
 
+FOLDER="simulation_files"
+
 if 'SUMO_HOME' in os.environ:
     sys.path.append(os.path.join(os.environ['SUMO_HOME'], 'tools'))
 import sumolib  # noqa
@@ -207,7 +209,7 @@ def get_options(args=None):
     if options.pedestrians:
         options.vclass = 'pedestrian'
     if options.validate and options.routefile is None:
-        options.routefile = "routes.rou.xml"
+        options.routefile = f"{FOLDER}/routes.rou.xml"
 
     if options.period is None and options.insertionRate is None and options.insertionDensity is None:
         options.period = [1.]

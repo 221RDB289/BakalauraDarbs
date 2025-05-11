@@ -62,7 +62,7 @@ def create_courier_routes():
                 "-n",
                 f"{FOLDER}/map.net.xml",
                 "--route-files",
-                f"optimized_courier.trips.xml",
+                f"{FOLDER}/optimized_courier.trips.xml",
                 "-o",
                 f"{FOLDER}/courier.rou.xml",
                 # ja ir kļūme, tad izmantojot šīs opcijas var iegūt vairāk informāciju:
@@ -76,6 +76,33 @@ def create_courier_routes():
         sys.exit()
 
 
-if __name__ == "__main__":
-    create_random_routes()
+# kurjeru maršrutu failu izdzēšana:
+def remove_courier_routes():
+    files = [f"{FOLDER}/courier.rou.xml", f"{FOLDER}/courier.rou.alt.xml"]
+    for f in files:
+        if os.path.exists(f):
+            os.remove(f)
+
+
+# nejaušo maršrutu failu izdzēšana:
+def remove_random_routes():
+    files = [
+        f"{FOLDER}/other.rou.xml",
+        f"{FOLDER}/other.rou.alt.xml",
+        f"{FOLDER}/other.trips.xml",
+    ]
+    for f in files:
+        if os.path.exists(f):
+            os.remove(f)
+
+
+def get_routes():
+    remove_courier_routes()
     create_courier_routes()
+
+    remove_random_routes()
+    create_random_routes()
+
+
+if __name__ == "__main__":
+    get_routes()

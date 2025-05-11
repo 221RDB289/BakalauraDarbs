@@ -95,5 +95,7 @@ if __name__ == "__main__":
     results = db_get(sql)
     print("NUMBER OF ROWS:", len(results))
 
-    print(len(db_get("SELECT * FROM locations WHERE lane IS NOT NULL AND address!='Plieņciema iela 35'")))
-    
+    print(db_get("SELECT * FROM locations WHERE address='Plieņciema iela 35';")[0])
+
+    for r in db_get("SELECT * FROM locations WHERE lane='213143782#0_0';"):
+        print(r)

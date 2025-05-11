@@ -124,11 +124,14 @@ def write_poly(poly, filepath=f"{TEMP}/combined.poly"):
 # SUMO tīkla faila pilns iegūšanas un apstrādes process:
 # ----------------------------------------------------------------------------------------------------------------------------------
 def get_osm():
-    # izveido mapes, ja tās neeksistē:
+    # izveido nepieciešamās mapes, ja tās neeksistē:
     if not os.path.exists(FOLDER):
         os.mkdir(FOLDER)
     if not os.path.exists(TEMP):
         os.mkdir(TEMP)
+    # izveido rezultātu mapi, gadījumā, ja to lietotājs ir izdzēsis:
+    if not os.path.exists("output"):
+        os.mkdir("output")
 
     # izveido failus, ja tādi neeksistē:
     if not os.path.exists(f"{FOLDER}/map.net.xml"):
@@ -191,15 +194,15 @@ def get_osm():
             modify_osm(TEMP, "map_filtered.osm", "map_modified.osm")
             print("Modified the map: map_modified.osm")
 
-        # 8. iegūst SUMO tīkla failu:
-        if not os.path.exists(f"{FOLDER}/map.net.xml"):
+        # 8. iegūst sākotnējo SUMO tīkla failu:
+        if not os.path.exists(f"{TEMP}/map_temp.net.xml"):
             if shutil.which("netconvert"):
                 cmd = [
                     "netconvert",
                     "--osm-files",
                     f"{TEMP}/map_modified.osm",
                     "--output-file",
-                    f"{FOLDER}/map.net.xml",
+                    f"{TEMP}/map_temp.net.xml",
                     "--geometry.remove=true",
                     "--ramps.guess=true",
                     "--junctions.join=true",
@@ -218,7 +221,37 @@ def get_osm():
                 print("ERROR: SUMO is not installed")
                 sys.exit()
 
-        # 9. filtrē tikai ēkas
+        # 9. pārbauda kurām ielām var piekļūt no konkrētās ielas (ņemot vērā ielu virzienus):
+        if not os.path.exists(f"{TEMP}/selection.txt"):
+            cmd = [
+                "python",
+                "netcheck.py",
+                f"{TEMP}/map_temp.net.xml",
+                "--source",
+                "908811053",
+                "--selection-output",
+                f"{TEMP}/selection.txt",
+            ]
+            subprocess.run(cmd)
+
+        # 10. iegūst beigu SUMO tīkla failu:
+        if not os.path.exists(f"{FOLDER}/map.net.xml"):
+            if shutil.which("netconvert"):
+                cmd = [
+                    "netconvert",
+                    "--sumo-net-file",
+                    f"{TEMP}/map_temp.net.xml",
+                    "--output-file",
+                    f"{FOLDER}/map.net.xml",
+                    "--keep-edges.input-file",
+                    f"{TEMP}/selection.txt",
+                ]
+                subprocess.run(cmd)
+            else:
+                print("ERROR: SUMO is not installed")
+                sys.exit()
+
+        # 11. iegūst ēkas:
         if not os.path.exists(f"{FOLDER}/buildings.poly.xml"):
             if shutil.which("polyconvert"):
                 cmd = [
