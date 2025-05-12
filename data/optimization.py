@@ -128,13 +128,13 @@ def create_courier_route_file(addresses, routes):
     # saglabā failu:
     tree = ET.ElementTree(root)
     tree.write(
-        f"{FOLDER}/optimized_courier.trips.xml", encoding="UTF-8", xml_declaration=True
+        f"{FOLDER}/courier.trips.xml", encoding="UTF-8", xml_declaration=True
     )
 
 
 def get_solution():
-    if os.path.exists(f"{FOLDER}/optimized_courier.trips.xml"):
-        os.remove(f"{FOLDER}/optimized_courier.trips.xml")
+    if os.path.exists(f"{FOLDER}/courier.trips.xml"):
+        os.remove(f"{FOLDER}/courier.trips.xml")
 
     addresses = get_random_addresses()
     data = create_data_model(addresses, 4)  # 4 kurjeri

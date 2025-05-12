@@ -209,7 +209,7 @@ def get_options(args=None):
     if options.pedestrians:
         options.vclass = 'pedestrian'
     if options.validate and options.routefile is None:
-        options.routefile = f"{FOLDER}/routes.rou.xml"
+        options.routefile = f"{FOLDER}/traffic.rou.xml"
 
     if options.period is None and options.insertionRate is None and options.insertionDensity is None:
         options.period = [1.]

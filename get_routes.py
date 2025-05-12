@@ -10,9 +10,9 @@ FOLDER = "simulation_files"
 STATIC = "static_files"
 
 
-# ģenerē maršrutus nejaušības gadījumā
+# ģenerē maršrutus nejaušības gadījumā:
 def create_random_routes():
-    if not os.path.exists(f"{FOLDER}/other.trips.xml"):
+    if not os.path.exists(f"{FOLDER}/traffic.trips.xml"):
         cmd = [
             "python",
             "randomTrips.py",
@@ -21,31 +21,30 @@ def create_random_routes():
             "-b",
             "0",
             "-e",
-            "28800",
-            "-p",
-            "2.4",  # 8*60*60/8*1500
-            "--random-depart",
+            "14400",  # 8h = 28800s
+            "--insertion-rate=30000",
             "-o",
-            f"{FOLDER}/other.trips.xml",
+            f"{FOLDER}/traffic.trips.xml",
             "--validate",
-            '--trip-attributes=type="myCar"',
             "--additional-file",
             f"{STATIC}/vehicle_types.xml",
         ]
         subprocess.run(cmd)
     if shutil.which("duarouter"):
-        if not os.path.exists(f"{FOLDER}/other.rou.xml"):
+        if not os.path.exists(f"{FOLDER}/traffic.rou.xml"):
             cmd = [
                 "duarouter",
                 "-n",
                 f"{FOLDER}/map.net.xml",
                 "--route-files",
-                f"{FOLDER}/other.trips.xml",
+                f"{FOLDER}/traffic.trips.xml",
                 "-o",
-                f"{FOLDER}/other.rou.xml",
+                f"{FOLDER}/traffic.rou.xml",
             ]
             subprocess.run(cmd)
-            print("CREATED random routes")
+            print("CREATED random/traffic routes")
+            os.remove("traffic.rou.alt.xml")
+            os.remove("traffic.trips.xml")
     else:
         print("ERROR: SUMO is not installed")
         sys.exit()
@@ -62,7 +61,7 @@ def create_courier_routes():
                 "-n",
                 f"{FOLDER}/map.net.xml",
                 "--route-files",
-                f"{FOLDER}/optimized_courier.trips.xml",
+                f"{FOLDER}/courier.trips.xml",
                 "-o",
                 f"{FOLDER}/courier.rou.xml",
                 # ja ir kļūme, tad izmantojot šīs opcijas var iegūt vairāk informāciju:
@@ -71,6 +70,8 @@ def create_courier_routes():
             ]
             subprocess.run(cmd)
             print("CREATED courier routes")
+            os.remove("courier.rou.alt.xml")
+            os.remove("courier.trips.xml")
     else:
         print("ERROR: SUMO is not installed")
         sys.exit()
@@ -87,9 +88,9 @@ def remove_courier_routes():
 # nejaušo maršrutu failu izdzēšana:
 def remove_random_routes():
     files = [
-        f"{FOLDER}/other.rou.xml",
-        f"{FOLDER}/other.rou.alt.xml",
-        f"{FOLDER}/other.trips.xml",
+        f"{FOLDER}/traffic.rou.xml",
+        f"{FOLDER}/traffic.rou.alt.xml",
+        f"{FOLDER}/traffic.trips.xml",
     ]
     for f in files:
         if os.path.exists(f):
@@ -97,8 +98,8 @@ def remove_random_routes():
 
 
 def get_routes():
-    remove_courier_routes()
-    create_courier_routes()
+    # remove_courier_routes()
+    # create_courier_routes()
 
     remove_random_routes()
     create_random_routes()
