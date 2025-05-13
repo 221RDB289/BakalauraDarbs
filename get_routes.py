@@ -9,28 +9,24 @@ STATIC = "static_files"
 
 # ģenerē maršrutus nejaušības gadījumā:
 def create_random_routes():
-    # var izmantot --routing-algorithm iestatījumu: https://sumo.dlr.de/docs/Simulation/Routing.html
-    # duarouter iestatījumi: https://sumo.dlr.de/docs/duarouter.html
-    if shutil.which("duarouter"):
-        if not os.path.exists(f"{FOLDER}/traffic.rou.xml"):
-            cmd = [
-                "duarouter",
-                "-n",
-                f"{FOLDER}/map.net.xml",
-                "--route-files",
-                f"{FOLDER}/traffic.trips.xml",
-                "-o",
-                f"{FOLDER}/traffic.rou.xml",
-                # ja ir kļūme, tad izmantojot šīs opcijas var iegūt vairāk informāciju:
-                # "--verbose",
-                # "true",
-            ]
-            subprocess.run(cmd)
-            print("CREATED random/traffic routes")
-            os.remove(f"{FOLDER}/traffic.rou.alt.xml")
-    else:
-        print("ERROR: SUMO is not installed")
-        sys.exit()
+    if not os.path.exists(f"{FOLDER}/traffic.rou.xml"):
+        cmd = [
+            "python",
+            "randomTrips.py",
+            "-n",
+            f"{FOLDER}/map.net.xml",
+            "-b",
+            "0",
+            "-e",
+            "28800",  # 8h = 28800s
+            "--insertion-rate=2000",
+            "-o",
+            f"{FOLDER}/traffic.trips.xml",
+            "--validate",
+            "--additional-file",
+            f"{STATIC}/vehicle_types.xml",
+        ]
+        subprocess.run(cmd)
 
 
 # kurjeru maršruti:
@@ -69,15 +65,15 @@ def remove_courier_routes():
 
 # nejaušo maršrutu failu izdzēšana:
 def remove_random_routes():
-    files = [f"{FOLDER}/traffic.rou.xml", f"{FOLDER}/traffic.rou.alt.xml"]
+    files = [f"{FOLDER}/traffic.rou.xml"]
     for f in files:
         if os.path.exists(f):
             os.remove(f)
 
 
 def get_routes():
-    remove_courier_routes()
-    create_courier_routes()
+    # remove_courier_routes()
+    # create_courier_routes()
 
     remove_random_routes()
     create_random_routes()
