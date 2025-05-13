@@ -222,7 +222,7 @@ def get_osm():
                 sys.exit()
 
         # 9. pārbauda kurām ielām var piekļūt no konkrētās ielas (ņemot vērā ielu virzienus):
-        if not os.path.exists(f"{TEMP}/selection.txt"):
+        if not os.path.exists(f"{TEMP}/selection_from.txt"):
             cmd = [
                 "python",
                 "netcheck.py",
@@ -230,11 +230,36 @@ def get_osm():
                 "--source",
                 "908811053",
                 "--selection-output",
-                f"{TEMP}/selection.txt",
+                f"{TEMP}/selection_from.txt",
             ]
             subprocess.run(cmd)
 
-        # 10. iegūst beigu SUMO tīkla failu:
+        # 10. pārbauda kuras ielas var nokļūt konkrētajai ielai (ņemot vērā ielu virzienus):
+        if not os.path.exists(f"{TEMP}/selection_to.txt"):
+            cmd = [
+                "python",
+                "netcheck.py",
+                f"{TEMP}/map_temp.net.xml",
+                "--destination",
+                "908811053",
+                "--selection-output",
+                f"{TEMP}/selection_to.txt",
+            ]
+            subprocess.run(cmd)
+
+        # 11. apvieno pareizās ielas vienā failā:
+        if not os.path.exists(f"{TEMP}/selection_combined.txt"):
+            with open(f"{TEMP}/selection_from.txt", "r") as f:
+                edges1 = set(line.strip() for line in f)
+            with open(f"{TEMP}/selection_to.txt", "r") as f:
+                edges2 = set(line.strip() for line in f)
+            edges = edges1.intersection(edges2)
+            with open(f"{TEMP}/selection_combined.txt", "w") as f:
+                for edge in edges:
+                    f.write(f"{edge}\n")
+            print("Combined and edges: selection_combined.txt")
+
+        # 12. iegūst beigu SUMO tīkla failu:
         if not os.path.exists(f"{FOLDER}/map.net.xml"):
             if shutil.which("netconvert"):
                 cmd = [
@@ -244,14 +269,14 @@ def get_osm():
                     "--output-file",
                     f"{FOLDER}/map.net.xml",
                     "--keep-edges.input-file",
-                    f"{TEMP}/selection.txt",
+                    f"{TEMP}/selection_combined.txt",
                 ]
                 subprocess.run(cmd)
             else:
                 print("ERROR: SUMO is not installed")
                 sys.exit()
 
-        # 11. iegūst ēkas:
+        # 13. iegūst ēkas:
         if not os.path.exists(f"{FOLDER}/buildings.poly.xml"):
             if shutil.which("polyconvert"):
                 cmd = [

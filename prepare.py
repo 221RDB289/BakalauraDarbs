@@ -4,8 +4,10 @@ from data.addresses import prapare_addresses
 from data.optimization import get_solution
 import os
 import shutil
+from traffic import create_traffic_route_file
 
-if __name__ == "__main__":
+
+def delete_old():
     # izdzēš veco datubāzes failu:
     if os.path.exists("data/locations.db"):
         os.remove("data/locations.db")
@@ -16,10 +18,15 @@ if __name__ == "__main__":
         if os.path.exists(f):
             shutil.rmtree(f)
 
+
+if __name__ == "__main__":
+    delete_old()
+
     # izveido jaunus failus un mapes:
     get_osm()
     prapare_addresses(100)
     get_solution()
+    create_traffic_route_file()
     get_routes()
 
     # izdzēš pagaidu failus un mapi, jo tie vairs nebūs nepieciešami:

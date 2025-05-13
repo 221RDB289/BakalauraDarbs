@@ -127,9 +127,7 @@ def create_courier_route_file(addresses, routes):
 
     # saglabā failu:
     tree = ET.ElementTree(root)
-    tree.write(
-        f"{FOLDER}/courier.trips.xml", encoding="UTF-8", xml_declaration=True
-    )
+    tree.write(f"{FOLDER}/courier.trips.xml", encoding="UTF-8", xml_declaration=True)
 
 
 def get_solution():

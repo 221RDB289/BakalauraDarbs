@@ -77,10 +77,23 @@ def db_create():
     print("DATABASE CREATED")
 
 
+# nejaušā veidā x reizes izvēlās 2 adrešu ielas (satiksmes simulācijai):
+def get_random_trips(x=1000):
+    trips = []
+    results = db_get(
+        f"SELECT lane FROM locations WHERE pos NOT NULL ORDER BY RANDOM() LIMIT {x*2};"
+    )
+    i = 0
+    while i < x * 2:
+        trips.append((results[i][0][:-2], results[i + 1][0][:-2]))
+        i += 2
+    return trips
+
+
 if __name__ == "__main__":
     # pirmo reizi izveido datubāzi:
     if not os.path.exists(FILENAME):
-        folder = FILENAME.split("/")[0]
+        folder = FILENAME.split("/")[0][:-2]
         if not os.path.exists(folder):
             os.mkdir(folder)
         db_create()
@@ -96,6 +109,3 @@ if __name__ == "__main__":
     print("NUMBER OF ROWS:", len(results))
 
     print(db_get("SELECT * FROM locations WHERE address='Plieņciema iela 35';")[0])
-
-    for r in db_get("SELECT * FROM locations WHERE lane='213143782#0_0';"):
-        print(r)

@@ -28,33 +28,74 @@ from __future__ import absolute_import
 from __future__ import print_function
 import os
 import sys
+
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.join(THIS_DIR, '..'))
+sys.path.append(os.path.join(THIS_DIR, ".."))
 from sumolib.options import ArgumentParser  # noqa
 import sumolib.net  # noqa
 
 
 def parse_args():
     op = ArgumentParser()
-    op.add_argument("net", category="input", type=op.net_file,
-                    help="The network file to be checked")
-    op.add_argument("-s", "--source", category="input", default=False, type=op.edge_list,
-                    help="List edges reachable from the source")
-    op.add_argument("-d", "--destination", category="input", type=op.edge, default=False,
-                    help="List edges which can reach the destination")
-    op.add_argument("-o", "--selection-output", category="output", type=op.file,
-                    help="Write output to file(s) as a loadable selection")
-    op.add_argument("--ignore-connections", action="store_true", default=False,
-                    help="Assume full connectivity at each node when computing all connected components")
+    op.add_argument(
+        "net", category="input", type=op.net_file, help="The network file to be checked"
+    )
+    op.add_argument(
+        "-s",
+        "--source",
+        category="input",
+        default=False,
+        type=op.edge_list,
+        help="List edges reachable from the source",
+    )
+    op.add_argument(
+        "-d",
+        "--destination",
+        category="input",
+        type=op.edge,
+        default=False,
+        help="List edges which can reach the destination",
+    )
+    op.add_argument(
+        "-o",
+        "--selection-output",
+        category="output",
+        type=op.file,
+        help="Write output to file(s) as a loadable selection",
+    )
+    op.add_argument(
+        "--ignore-connections",
+        action="store_true",
+        default=False,
+        help="Assume full connectivity at each node when computing all connected components",
+    )
     op.add_argument("-l", "--vclass", help="Include only edges allowing vClass")
-    op.add_argument("--component-output", type=op.file, default=None,
-                    help=("Write components of disconnected network to file - not compatible " +
-                          "with --source or --destination options"))
-    op.add_argument("-r", "--results-output", type=op.file, default=None,
-                    help=("Write results summary of disconnected network to file - not compatible " +
-                          "with --source or --destination options"))
-    op.add_argument("-t", "--print-types", action="store_true", default=False,
-                    help="Print edge types used in the component")
+    op.add_argument(
+        "--component-output",
+        type=op.file,
+        default=None,
+        help=(
+            "Write components of disconnected network to file - not compatible "
+            + "with --source or --destination options"
+        ),
+    )
+    op.add_argument(
+        "-r",
+        "--results-output",
+        type=op.file,
+        default=None,
+        help=(
+            "Write results summary of disconnected network to file - not compatible "
+            + "with --source or --destination options"
+        ),
+    )
+    op.add_argument(
+        "-t",
+        "--print-types",
+        action="store_true",
+        default=False,
+        help="Print edge types used in the component",
+    )
 
     options = op.parse_args()
     return options
@@ -72,10 +113,12 @@ def getWeaklyConnected(net, vclass=None, ignore_connections=False):
             if vclass is None or edge.allows(vclass):
                 component.add(edge.getID())
                 if ignore_connections:
-                    for n in (edge.getFromNode().getOutgoing() +
-                              edge.getFromNode().getIncoming() +
-                              edge.getToNode().getOutgoing() +
-                              edge.getToNode().getIncoming()):
+                    for n in (
+                        edge.getFromNode().getOutgoing()
+                        + edge.getFromNode().getIncoming()
+                        + edge.getToNode().getOutgoing()
+                        + edge.getToNode().getIncoming()
+                    ):
                         if n in edgesLeft:
                             queue.append(n)
                             edgesLeft.remove(n)
@@ -100,15 +143,21 @@ def getReachable(net, source_id, options, useIncoming=False):
     try:
         found = net.getReachable(source, options.vclass, useIncoming)
         if useIncoming:
-            print("{} of {} edges can reach edge '{}':".format(
-                len(found), len(net.getEdges()), source_id))
+            print(
+                "{} of {} edges can reach edge '{}':".format(
+                    len(found), len(net.getEdges()), source_id
+                )
+            )
         else:
-            print("{} of {} edges are reachable from edge '{}':".format(
-                len(found), len(net.getEdges()), source_id))
+            print(
+                "{} of {} edges are reachable from edge '{}':".format(
+                    len(found), len(net.getEdges()), source_id
+                )
+            )
 
         ids = sorted([e.getID() for e in found])
         if options.selection_output:
-            with open(options.selection_output, 'w') as f:
+            with open(options.selection_output, "w") as f:
                 for e in ids:
                     f.write("edge:{}\n".format(e))
         else:
@@ -120,16 +169,17 @@ def getReachable(net, source_id, options, useIncoming=False):
 
 if __name__ == "__main__":
     options = parse_args()
-    net = sumolib.net.readNet(options.net,
-                              withInternal=(options.vclass == "pedestrian"),
-                              withPedestrianConnections=(options.vclass == "pedestrian"))
+    net = sumolib.net.readNet(
+        options.net,
+        withInternal=(options.vclass == "pedestrian"),
+        withPedestrianConnections=(options.vclass == "pedestrian"),
+    )
     if options.source:
         getReachable(net, options.source, options)
     elif options.destination:
         getReachable(net, options.destination, options, True)
     else:
-        components = getWeaklyConnected(
-            net, options.vclass, options.ignore_connections)
+        components = getWeaklyConnected(net, options.vclass, options.ignore_connections)
         if len(components) != 1:
             print("Warning! Net is not connected.")
 
@@ -145,7 +195,9 @@ if __name__ == "__main__":
         # Iterate through components to output and summarize
         for idx, comp in enumerate(sorted(components, key=lambda c: next(iter(c)))):
             if options.selection_output:
-                with open("{}comp{}.txt".format(options.selection_output, idx), 'w') as f:
+                with open(
+                    "{}comp{}.txt".format(options.selection_output, idx), "w"
+                ) as f:
                     for e in comp:
                         f.write("edge:{}\n".format(e))
             types = set()
@@ -165,7 +217,8 @@ if __name__ == "__main__":
                 edge_count_dist[edge_count] = 0
             edge_count_dist[edge_count] += 1
             output_str = "Component: #{} Edge Count: {}\n {}\n".format(
-                idx, edge_count, " ".join(comp))
+                idx, edge_count, " ".join(comp)
+            )
             if types:
                 output_str += "Type(s): {}\n".format(" ".join(sorted(types)))
             print(output_str)
@@ -177,7 +230,8 @@ if __name__ == "__main__":
         if total > 0:
             coverage = round(max * 100.0 / total, 2)
         summary_str = "Total Edges: {}\nLargest Component: #{} Edge Count: {} Coverage: {}%\n".format(
-            total, max_idx, max, coverage)
+            total, max_idx, max, coverage
+        )
         print(summary_str)
         dist_str = "Edges\tIncidence"
         print(dist_str)
@@ -191,15 +245,13 @@ if __name__ == "__main__":
 
         # Check for output of components to file
         if options.component_output is not None:
-            print("Writing component output to: {}".format(
-                options.component_output))
-            with open(options.component_output, 'w') as f:
+            print("Writing component output to: {}".format(options.component_output))
+            with open(options.component_output, "w") as f:
                 f.write("\n".join(output_str_list))
 
         # Check for output of results summary to file
         if options.results_output is not None:
-            print(
-                "Writing results output to: {}".format(options.results_output))
-            with open(options.results_output, 'w') as r:
+            print("Writing results output to: {}".format(options.results_output))
+            with open(options.results_output, "w") as r:
                 r.write(summary_str)
                 r.write("\n".join(dist_str_list))
