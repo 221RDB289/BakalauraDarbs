@@ -137,6 +137,7 @@ def get_solution(
     max_distance_m,
     first_solution_strategy,
     local_search_metaheuristic,
+    solution_minutes,
 ):
 
     data = create_data_model(depot_address, addresses, courier_count)
@@ -177,7 +178,7 @@ def get_solution(
     # https://developers.google.com/optimization/routing/routing_options
     search_parameters = pywrapcp.DefaultRoutingSearchParameters()
     search_parameters.time_limit.seconds = (
-        300  # 5 minūtes laika limits risinājuma meklēšanai
+        solution_minutes  # 5 minūtes laika limits risinājuma meklēšanai
     )
     # pirmā atrisinājuma (heiristikas) metode/algoritms:
     """

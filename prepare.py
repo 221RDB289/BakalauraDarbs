@@ -25,10 +25,11 @@ if __name__ == "__main__":
     # izveido jaunus failus un mapes:
     get_osm()
     prapare_addresses(100)
-    get_solution()
-    create_traffic_route_file()
-    get_routes()
+    # get_solution()
+    # get_solution()
+    # create_traffic_route_file()
+    # get_routes()
 
     # izdzēš pagaidu failus un mapi, jo tie vairs nebūs nepieciešami:
-    if os.path.exists("temp_files"):
-        shutil.rmtree("temp_files")
+    # if os.path.exists("temp_files"):
+    #     shutil.rmtree("temp_files")

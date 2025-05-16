@@ -40,11 +40,14 @@ def create_experiemnt_trips():
     depot_address = "Plieņciema iela 35"
     courier_count = 4
     max_distance_m = 100000  # maksimālais nobraukšanas daudzums (m) katram kurjeram
+    solution_minutes = 60  # 1 minūte, lai atrastu optimālo risinājumu
     # eksperimentu veidošana:
-    i=1
+    i = 1
     for first_solution_strategy in first_solution_strategies:
         for local_search_metaheuristic in local_search_metaheuristics:
-            print(f"EXPERIEMNT {i} ({first_solution_strategy}_{local_search_metaheuristic})")
+            print(
+                f"EXPERIEMNT {i} ({first_solution_strategy}_{local_search_metaheuristic})"
+            )
             folder = f"experiments/experiment_{first_solution_strategy}_{local_search_metaheuristic}"
             get_solution(
                 depot_address=depot_address,
@@ -54,16 +57,39 @@ def create_experiemnt_trips():
                 max_distance_m=max_distance_m,
                 first_solution_strategy=first_solution_strategy,
                 local_search_metaheuristic=local_search_metaheuristic,
+                solution_minutes=solution_minutes,
             )
-            i+=1
+            i += 1
+
+
+import sys
+
 
 def create_experiment_routes():
     for first_solution_strategy in first_solution_strategies:
         for local_search_metaheuristic in local_search_metaheuristics:
             folder = f"experiments/experiment_{first_solution_strategy}_{local_search_metaheuristic}"
-            create_courier_routes(folder)
+            if os.path.exists(folder):
+                create_courier_routes(folder)
+                print(
+                    f"ROUTES ({first_solution_strategy}_{local_search_metaheuristic})"
+                )
 
-import shutil
+
+import time
+
 if __name__ == "__main__":
     create_experiemnt_trips()
+    # create_experiment_routes()
 
+    # create_experiment_routes()
+    # first_solution_strategy = 3
+    # local_search_metaheuristic = 2
+    # folder = (
+    #     f"experiments/experiment_{first_solution_strategy}_{local_search_metaheuristic}"
+    # )
+    # if os.path.exists(folder):
+    #     if os.path.exists(folder + "/courier.rou.xml"):
+    #         os.remove(folder + "/courier.rou.xml")
+    #     create_courier_routes(folder)
+    #     print(f"ROUTES ({first_solution_strategy}_{local_search_metaheuristic})")

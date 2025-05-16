@@ -44,8 +44,8 @@ def create_courier_routes(folder):
                 "-o",
                 f"{folder}/courier.rou.xml",
                 # ja ir kļūme, tad izmantojot šīs opcijas var iegūt vairāk informāciju:
-                # "--verbose",
-                # "true",
+                "--verbose",
+                "true",
             ]
             subprocess.run(cmd)
             print("CREATED courier routes")
@@ -75,7 +75,7 @@ def get_routes():
     # remove_courier_routes()
     # create_courier_routes()
 
-    remove_random_routes()
+    # remove_random_routes()
     create_random_routes()
 
 
