@@ -44,8 +44,8 @@ def create_courier_routes(folder):
                 "-o",
                 f"{folder}/courier.rou.xml",
                 # ja ir kļūme, tad izmantojot šīs opcijas var iegūt vairāk informāciju:
-                "--verbose",
-                "true",
+                # "--verbose",
+                # "true",
             ]
             subprocess.run(cmd)
             print("CREATED courier routes")

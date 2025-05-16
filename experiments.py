@@ -79,8 +79,8 @@ def create_experiment_routes():
 import time
 
 if __name__ == "__main__":
-    create_experiemnt_trips()
-    # create_experiment_routes()
+    # create_experiemnt_trips()
+    create_experiment_routes()
 
     # create_experiment_routes()
     # first_solution_strategy = 3
