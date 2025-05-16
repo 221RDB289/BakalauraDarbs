@@ -4,7 +4,7 @@ import os
 from data.addresses import get_random_addresses
 from get_routes import create_courier_routes
 import shutil
-
+from simulation import run_simulation
 
 # pirmā atrisinājuma (heiristikas) metode/algoritmi:
 first_solution_strategies = [
@@ -69,10 +69,10 @@ def create_experiment_routes():
         for local_search_metaheuristic in local_search_metaheuristics:
             folder = f"experiments/experiment_{first_solution_strategy}_{local_search_metaheuristic}"
             if os.path.exists(folder):
-                create_courier_routes(folder)
                 print(
                     f"ROUTES ({first_solution_strategy}_{local_search_metaheuristic})"
                 )
+                create_courier_routes(folder)
 
 
 def create_sumo_cfgs():
@@ -80,19 +80,31 @@ def create_sumo_cfgs():
         for local_search_metaheuristic in local_search_metaheuristics:
             folder = f"experiments/experiment_{first_solution_strategy}_{local_search_metaheuristic}"
             if os.path.exists(folder):
-                shutil.copyfile(
-                    "static_files/template.sumo.cfg",
-                    f"experiments/experiment_{first_solution_strategy}_{local_search_metaheuristic}/experiment.sumo.cfg",
-                )
                 print(
                     f"SUMO CFG ({first_solution_strategy}_{local_search_metaheuristic})"
                 )
+                shutil.copyfile(
+                    "static_files/template.sumo.cfg",
+                    f"{folder}/experiment.sumo.cfg",
+                )
+
+
+def run_simulations():
+    for first_solution_strategy in first_solution_strategies:
+        for local_search_metaheuristic in local_search_metaheuristics:
+            folder = f"experiments/experiment_{first_solution_strategy}_{local_search_metaheuristic}"
+            if os.path.exists(folder):
+                print(
+                    f"SIMULATION ({first_solution_strategy}_{local_search_metaheuristic})"
+                )
+                run_simulation(f"{folder}/experiment.sumo.cfg")
 
 
 if __name__ == "__main__":
     # create_experiemnt_trips()
     # create_experiment_routes()
-    create_sumo_cfgs()
+    # create_sumo_cfgs()
+    run_simulations()
 
     # create_experiment_routes()
     # first_solution_strategy = 3
