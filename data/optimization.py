@@ -8,8 +8,7 @@ from geopy.geocoders import Nominatim
 from sumolib import net
 import xml.etree.ElementTree as ET
 from data.addresses import *
-
-FOLDER = "simulation_files"
+from time import perf_counter
 
 
 # izvada sākuma/beigu (piegādes noliktavas) koordinātas no SUMO tīkla faila:
@@ -45,9 +44,9 @@ def get_depot(address="Plieņciema iela 35"):
 
 
 # izveido datu modeli no SUMO tīkla faila x un y koordinātām katrai norādītajai adresei:
-def create_data_model(addresses, num_vehicles=1):
+def create_data_model(depot_address, addresses, num_vehicles=1):
     coordinates = [
-        get_depot()
+        get_depot(depot_address)
     ]  # sākuma/beigu (piegādes noliktava) ir 1. saraksta pozīcijā
     for address, latitude, longitude, x, y, lane, pos, used in addresses:
         coordinates.append((x, y))
@@ -79,7 +78,7 @@ def compute_euclidean_distance_matrix(locations):
 
 # izveido kurjera maršrutu failu:
 # routes ir saraksts ar piegādes punktu sarakstiem (saraksts karam kurjeram):
-def create_courier_route_file(addresses, routes):
+def create_courier_route_file(folder, addresses, routes):
     root = ET.Element(
         "routes",
         {
@@ -127,15 +126,20 @@ def create_courier_route_file(addresses, routes):
 
     # saglabā failu:
     tree = ET.ElementTree(root)
-    tree.write(f"{FOLDER}/courier.trips.xml", encoding="UTF-8", xml_declaration=True)
+    tree.write(f"{folder}/courier.trips.xml", encoding="UTF-8", xml_declaration=True)
 
 
-def get_solution():
-    if os.path.exists(f"{FOLDER}/courier.trips.xml"):
-        os.remove(f"{FOLDER}/courier.trips.xml")
+def get_solution(
+    depot_address,
+    addresses,
+    folder,
+    courier_count,
+    max_distance_m,
+    first_solution_strategy,
+    local_search_metaheuristic,
+):
 
-    addresses = get_random_addresses()
-    data = create_data_model(addresses, 4)  # 4 kurjeri
+    data = create_data_model(depot_address, addresses, courier_count)
 
     # maršrutu indeksēšanai:
     manager = pywrapcp.RoutingIndexManager(
@@ -161,8 +165,8 @@ def get_solution():
     dimension_name = "Distance"
     routing.AddDimension(
         transit_callback_index,
-        100000,  # daudzums par cik metriem kurjers var nobraukt papildus (pēc ierobežojuma)
-        100000,  # kurjera maksimālais atļautais nobrauktais attālums
+        max_distance_m,  # atļautais pārpalikums no maksimālā attāluma (mums ir vienalga, tāpēc varam šo ignorēt, dodot tam maksimālo vērtību)
+        max_distance_m,  # kurjera maksimālais atļautais nobrauktais attālums (m)
         True,  # sāk skaitīt no nulles
         dimension_name,
     )
@@ -173,7 +177,7 @@ def get_solution():
     # https://developers.google.com/optimization/routing/routing_options
     search_parameters = pywrapcp.DefaultRoutingSearchParameters()
     search_parameters.time_limit.seconds = (
-        60  # 1 minūtes laika limits risinājuma meklēšanai
+        300  # 5 minūtes laika limits risinājuma meklēšanai
     )
     # pirmā atrisinājuma (heiristikas) metode/algoritms:
     """
@@ -191,9 +195,7 @@ def get_solution():
     routing_enums_pb2.FirstSolutionStrategy.LOCAL_CHEAPEST_ARC
     routing_enums_pb2.FirstSolutionStrategy.FIRST_UNBOUND_MIN_VALUE
     """
-    search_parameters.first_solution_strategy = (
-        routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC
-    )
+    search_parameters.first_solution_strategy = first_solution_strategy
     # lokālā atrisinājuma (metaheiristikas) metode/algoritms:
     """
     routing_enums_pb2.LocalSearchMetaheuristic.GREEDY_DESCENT
@@ -202,14 +204,20 @@ def get_solution():
     routing_enums_pb2.LocalSearchMetaheuristic.TABU_SEARCH
     routing_enums_pb2.LocalSearchMetaheuristic.GENERIC_TABU_SEARCH
     """
-    search_parameters.local_search_metaheuristic = (
-        routing_enums_pb2.LocalSearchMetaheuristic.GUIDED_LOCAL_SEARCH
-    )
+    search_parameters.local_search_metaheuristic = local_search_metaheuristic
 
     # iegūst atrisinājumu pēc dotajiem meklēšanas parametriem:
+    start = perf_counter()
     solution = routing.SolveWithParameters(search_parameters)
+    end = perf_counter()
+    print(f"{end-start} (seconds)")
 
     if solution:
+        # izveido mapi un datni:
+        if not os.path.exists(folder):
+            os.mkdir(folder)
+        if os.path.exists(f"{folder}/courier.trips.xml"):
+            os.remove(f"{folder}/courier.trips.xml")
         # katram kurjeram/maršrutam saglabā adrešu indeksu sarakstu:
         routes = []
         for vehicle_id in range(data["num_vehicles"]):
@@ -217,16 +225,21 @@ def get_solution():
                 continue
             stops = []
             index = routing.Start(vehicle_id)
+            route_distance = 0
             while not routing.IsEnd(index):
                 stops.append(manager.IndexToNode(index))
+                previous_index = index
                 index = solution.Value(routing.NextVar(index))
+                route_distance += routing.GetArcCostForVehicle(
+                    previous_index, index, vehicle_id
+                )
             stops.pop(0)  # noņem 1. vērtību, jo tā ir noliktava
             routes.append(stops)
-
-        for r in routes:
-            print(r)
+            # izpintē rezultātu info:
+            print(stops)
+            print(route_distance)
 
         # izveido kurjeru maršrutu failu:
-        create_courier_route_file(addresses, routes)
+        create_courier_route_file(folder, addresses, routes)
     else:
         print("ERROR: no solution found!")

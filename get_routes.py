@@ -30,26 +30,26 @@ def create_random_routes():
 
 
 # kurjeru maršruti:
-def create_courier_routes():
+def create_courier_routes(folder):
     # TODO: jāizmanto --routing-algorithm https://sumo.dlr.de/docs/Simulation/Routing.html
     # duarouter iestatījumi: https://sumo.dlr.de/docs/duarouter.html
     if shutil.which("duarouter"):
-        if not os.path.exists(f"{FOLDER}/courier.rou.xml"):
+        if not os.path.exists(f"{folder}/courier.rou.xml"):
             cmd = [
                 "duarouter",
                 "-n",
                 f"{FOLDER}/map.net.xml",
                 "--route-files",
-                f"{FOLDER}/courier.trips.xml",
+                f"{folder}/courier.trips.xml",
                 "-o",
-                f"{FOLDER}/courier.rou.xml",
+                f"{folder}/courier.rou.xml",
                 # ja ir kļūme, tad izmantojot šīs opcijas var iegūt vairāk informāciju:
                 # "--verbose",
                 # "true",
             ]
             subprocess.run(cmd)
             print("CREATED courier routes")
-            os.remove(f"{FOLDER}/courier.rou.alt.xml")
+            os.remove(f"{folder}/courier.rou.alt.xml")
     else:
         print("ERROR: SUMO is not installed")
         sys.exit()
