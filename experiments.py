@@ -3,6 +3,8 @@ from ortools.constraint_solver import routing_enums_pb2
 import os
 from data.addresses import get_random_addresses
 from get_routes import create_courier_routes
+import shutil
+
 
 # pirmā atrisinājuma (heiristikas) metode/algoritmi:
 first_solution_strategies = [
@@ -62,9 +64,6 @@ def create_experiemnt_trips():
             i += 1
 
 
-import sys
-
-
 def create_experiment_routes():
     for first_solution_strategy in first_solution_strategies:
         for local_search_metaheuristic in local_search_metaheuristics:
@@ -77,27 +76,18 @@ def create_experiment_routes():
 
 
 def create_sumo_cfgs():
-    sumo_cfg_template = "riga.sumo.cfg"
-    with open(sumo_cfg_template, "r") as f:
-        sumo_cfg = f.read()
     for first_solution_strategy in first_solution_strategies:
         for local_search_metaheuristic in local_search_metaheuristics:
             folder = f"experiments/experiment_{first_solution_strategy}_{local_search_metaheuristic}"
             if os.path.exists(folder):
-                experiment_sumo_cfg = sumo_cfg.replace(
-                    "simulation_files/courier.rou.xml", f"{folder}/courier.rou.xml"
+                shutil.copyfile(
+                    "static_files/template.sumo.cfg",
+                    f"experiments/experiment_{first_solution_strategy}_{local_search_metaheuristic}/experiment.sumo.cfg",
                 )
-                experiment_sumo_cfg = sumo_cfg.replace("output/", f"{folder}/output/")
-                if not os.path.exists(f"{folder}/output/"):
-                    os.mkdir(f"{folder}/output/")
-                with open(f"{folder}/riga.sumo.cfg", "w") as f:
-                    f.write(experiment_sumo_cfg)
                 print(
                     f"SUMO CFG ({first_solution_strategy}_{local_search_metaheuristic})"
                 )
 
-
-import time
 
 if __name__ == "__main__":
     # create_experiemnt_trips()

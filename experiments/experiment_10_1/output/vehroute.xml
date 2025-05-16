@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2025-05-16 15:48:58 by Eclipse SUMO GUI Version 1.22.0
+<sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="C:\Users\blazi\Desktop\project\experiments\experiment_10_1\../../simulation_files/map.net.xml"/>
+        <route-files value="C:\Users\blazi\Desktop\project\experiments\experiment_10_1\courier.rou.xml,C:\Users\blazi\Desktop\project\experiments\experiment_10_1\ ../../simulation_files/traffic.rou.xml"/>
+        <additional-files value="C:\Users\blazi\Desktop\project\experiments\experiment_10_1\../../simulation_files/buildings.poly.xml"/>
+    </input>
+
+    <output>
+        <battery-output value="C:\Users\blazi\Desktop\project\experiments\experiment_10_1\output/electric.xml"/>
+        <summary-output value="C:\Users\blazi\Desktop\project\experiments\experiment_10_1\output/summary.xml"/>
+        <tripinfo-output value="C:\Users\blazi\Desktop\project\experiments\experiment_10_1\output/tripinfo.xml"/>
+        <personinfo-output value="C:\Users\blazi\Desktop\project\experiments\experiment_10_1\output/personinfo.xml"/>
+        <vehroute-output value="C:\Users\blazi\Desktop\project\experiments\experiment_10_1\output/vehroute.xml"/>
+        <stop-output value="C:\Users\blazi\Desktop\project\experiments\experiment_10_1\output/stopinfo.xml"/>
+        <collision-output value="C:\Users\blazi\Desktop\project\experiments\experiment_10_1\output/collision.xml"/>
+        <edgedata-output value="C:\Users\blazi\Desktop\project\experiments\experiment_10_1\output/edgeData.xml"/>
+        <lanedata-output value="C:\Users\blazi\Desktop\project\experiments\experiment_10_1\output/laneData.xml"/>
+        <statistic-output value="C:\Users\blazi\Desktop\project\experiments\experiment_10_1\output/statistic.xml"/>
+    </output>
+
+    <time>
+        <begin value="0"/>
+        <end value="28800"/>
+        <step-length value="1"/>
+    </time>
+
+    <processing>
+        <time-to-teleport value="-1"/>
+    </processing>
+
+    <gui_only>
+        <gui-settings-file value="C:\Users\blazi\Desktop\project\experiments\experiment_10_1\../../static_files/view.xml"/>
+    </gui_only>
+
+</sumoConfiguration>
+-->
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+</routes>

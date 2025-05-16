@@ -75,7 +75,7 @@ def get_routes():
     # remove_courier_routes()
     # create_courier_routes()
 
-    # remove_random_routes()
+    remove_random_routes()
     create_random_routes()
 
 

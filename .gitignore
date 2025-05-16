@@ -1,7 +1,5 @@
 .venv
 __pycache__
-routes.rou.xml
-simulation_files
+map.net.xml
 temp_files
-output
 test.py
