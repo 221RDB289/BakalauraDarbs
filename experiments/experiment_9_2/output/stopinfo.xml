@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2025-05-16 23:56:54 by Eclipse SUMO sumo Version 1.22.0
+<sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="experiments/experiment_9_2/../../simulation_files/map.net.xml"/>
+        <route-files value="experiments/experiment_9_2/courier.rou.xml,experiments/experiment_9_2/ ../../simulation_files/traffic.rou.xml"/>
+        <additional-files value="experiments/experiment_9_2/../../simulation_files/buildings.poly.xml"/>
+    </input>
+
+    <output>
+        <battery-output value="experiments/experiment_9_2/output/electric.xml"/>
+        <summary-output value="experiments/experiment_9_2/output/summary.xml"/>
+        <tripinfo-output value="experiments/experiment_9_2/output/tripinfo.xml"/>
+        <personinfo-output value="experiments/experiment_9_2/output/personinfo.xml"/>
+        <vehroute-output value="experiments/experiment_9_2/output/vehroute.xml"/>
+        <stop-output value="experiments/experiment_9_2/output/stopinfo.xml"/>
+        <collision-output value="experiments/experiment_9_2/output/collision.xml"/>
+        <edgedata-output value="experiments/experiment_9_2/output/edgeData.xml"/>
+        <lanedata-output value="experiments/experiment_9_2/output/laneData.xml"/>
+        <statistic-output value="experiments/experiment_9_2/output/statistic.xml"/>
+    </output>
+
+    <time>
+        <begin value="0"/>
+        <end value="28800"/>
+        <step-length value="1"/>
+    </time>
+
+    <processing>
+        <time-to-teleport value="-1"/>
+    </processing>
+
+    <report>
+        <no-step-log value="true"/>
+    </report>
+
+    <traci_server>
+        <remote-port value="50270"/>
+    </traci_server>
+
+    <gui_only>
+        <gui-settings-file value="experiments/experiment_9_2/../../static_files/view.xml"/>
+    </gui_only>
+
+</sumoConfiguration>
+-->
+
+<stops xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/stopinfo_file.xsd">
+    <stopinfo id="courier_0" type="myCourier" lane="791793605#2_0" pos="103.07" parking="1" started="374.00" ended="434.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="1060828882_0" pos="0.08" parking="1" started="501.00" ended="561.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_0" type="myCourier" lane="-24009035#4_0" pos="64.49" parking="1" started="635.00" ended="695.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="41791074#0_0" pos="198.51" parking="1" started="703.00" ended="763.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_2" type="myCourier" lane="34890086#1_0" pos="43.41" parking="1" started="876.00" ended="936.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="-90456742#1_0" pos="56.08" parking="1" started="962.00" ended="1022.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="1105974235#2_0" pos="45.05" parking="1" started="1051.00" ended="1111.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="44452602#5_0" pos="14.78" parking="1" started="1217.00" ended="1277.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_0" type="myCourier" lane="4798776#0_0" pos="65.72" parking="1" started="1429.00" ended="1489.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_0" type="myCourier" lane="-362862812#3_0" pos="20.12" parking="1" started="1620.00" ended="1680.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="153146981#2_0" pos="2.46" parking="1" started="1647.00" ended="1707.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_2" type="myCourier" lane="8073392#0_0" pos="33.93" parking="1" started="1711.00" ended="1771.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="-392232683#0_0" pos="11.19" parking="1" started="1756.00" ended="1816.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="475833816#8_0" pos="6.89" parking="1" started="2011.00" ended="2071.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_0" type="myCourier" lane="-266437160#2_0" pos="0.73" parking="1" started="2108.00" ended="2168.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="-60334585#4_0" pos="46.73" parking="1" started="2158.00" ended="2218.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="-144932769#18_0" pos="67.77" parking="1" started="2359.00" ended="2419.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_0" type="myCourier" lane="103917871#1_0" pos="35.94" parking="1" started="2441.00" ended="2501.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_0" type="myCourier" lane="-910324730_0" pos="35.76" parking="1" started="2609.00" ended="2669.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_0" type="myCourier" lane="11016780#2_0" pos="26.44" parking="1" started="2825.00" ended="2885.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="87575610_0" pos="134.02" parking="1" started="2834.00" ended="2894.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="-163695776#2_0" pos="61.20" parking="1" started="2866.00" ended="2926.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="165396011#3_0" pos="67.47" parking="1" started="3089.00" ended="3149.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_0" type="myCourier" lane="-1177576154#2_0" pos="20.44" parking="1" started="3211.00" ended="3271.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_2" type="myCourier" lane="361380070_0" pos="87.29" parking="1" started="3446.00" ended="3506.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="-1287275698#2_0" pos="6.17" parking="1" started="3498.00" ended="3558.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="124824611#4_0" pos="13.31" parking="1" started="3728.00" ended="3788.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="-153688235_0" pos="39.65" parking="1" started="3793.00" ended="3853.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_2" type="myCourier" lane="-392365083#2_0" pos="29.61" parking="1" started="4005.00" ended="4065.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="-298672959#7_0" pos="0.10" parking="1" started="4033.00" ended="4093.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_0" type="myCourier" lane="377438955#0_0" pos="57.44" parking="1" started="4037.00" ended="4097.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_2" type="myCourier" lane="-7979180#8_0" pos="10.79" parking="1" started="4278.00" ended="4338.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="-124457040_0" pos="124.74" parking="1" started="4283.00" ended="4343.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_0" type="myCourier" lane="7994502#11_0" pos="79.14" parking="1" started="4333.00" ended="4393.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_2" type="myCourier" lane="-450469086#3_0" pos="157.64" parking="1" started="4404.00" ended="4464.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_0" type="myCourier" lane="-19886578#1_0" pos="41.66" parking="1" started="4471.00" ended="4531.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="-150855016_0" pos="106.53" parking="1" started="4479.00" ended="4539.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="1220453965#2_0" pos="5.68" parking="1" started="4578.00" ended="4638.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="124457031_0" pos="20.64" parking="1" started="4712.00" ended="4772.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_0" type="myCourier" lane="-462372648_0" pos="0.09" parking="1" started="4746.00" ended="4806.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_0" type="myCourier" lane="24064067#0_0" pos="66.68" parking="1" started="4875.00" ended="4935.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="150854999_0" pos="43.25" parking="1" started="4917.00" ended="4977.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="150855003_0" pos="160.09" parking="1" started="5072.00" ended="5132.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="-380542180_0" pos="17.44" parking="1" started="5450.00" ended="5510.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_0" type="myCourier" lane="-1297736029_0" pos="0.10" parking="1" started="5547.00" ended="5607.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="832592530_0" pos="21.79" parking="1" started="5812.00" ended="5872.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="1245256628_0" pos="217.78" parking="1" started="5968.00" ended="6028.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_0" type="myCourier" lane="1102727576#0_0" pos="125.01" parking="1" started="6222.00" ended="6282.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="897170933_0" pos="168.12" parking="1" started="6444.00" ended="6504.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_0" type="myCourier" lane="396681960_0" pos="5.89" parking="1" started="6759.00" ended="6819.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="-1144915478#1_0" pos="30.50" parking="1" started="6937.00" ended="6997.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="24257815#14_0" pos="0.10" parking="1" started="7050.00" ended="7110.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_0" type="myCourier" lane="38331253#4_0" pos="77.16" parking="1" started="7172.00" ended="7232.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_0" type="myCourier" lane="-238868636#6_0" pos="10.51" parking="1" started="7336.00" ended="7396.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_2" type="myCourier" lane="1167511576#1_0" pos="5.62" parking="1" started="7369.00" ended="7429.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_0" type="myCourier" lane="212045792#0_0" pos="4.42" parking="1" started="7472.00" ended="7532.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="-127381825#1_0" pos="18.72" parking="1" started="7474.00" ended="7534.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="1302031503_0" pos="300.86" parking="1" started="7613.00" ended="7673.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_0" type="myCourier" lane="-909972361#0_0" pos="15.55" parking="1" started="7685.00" ended="7745.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="1292518262#0_0" pos="6.67" parking="1" started="7719.00" ended="7779.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="73086556#4_0" pos="20.46" parking="1" started="7899.00" ended="7959.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_2" type="myCourier" lane="129786621#2_0" pos="51.82" parking="1" started="8152.00" ended="8212.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="377963796#0_0" pos="98.66" parking="1" started="8169.00" ended="8229.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_2" type="myCourier" lane="129786621#2_0" pos="89.87" parking="1" started="8222.00" ended="8282.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_0" type="myCourier" lane="-325384114#2_0" pos="23.73" parking="1" started="8277.00" ended="8337.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="-1252328379#1_0" pos="43.31" parking="1" started="8555.00" ended="8615.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_2" type="myCourier" lane="39610477#2_0" pos="187.83" parking="1" started="8583.00" ended="8643.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="-240657401#13_0" pos="81.23" parking="1" started="8634.00" ended="8694.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="974288547#0_0" pos="50.86" parking="1" started="8888.00" ended="8948.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="27460320#1_0" pos="112.29" parking="1" started="9025.00" ended="9085.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="1205242324#1_0" pos="44.00" parking="1" started="9138.00" ended="9198.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="218722719#2_0" pos="12.81" parking="1" started="9334.00" ended="9394.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="-636535730_0" pos="101.53" parking="1" started="9577.00" ended="9637.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="910312085#1_0" pos="2.87" parking="1" started="9656.00" ended="9716.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="-141330996#8_0" pos="23.92" parking="1" started="9820.00" ended="9880.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="-1111206649_0" pos="0.08" parking="1" started="9958.00" ended="10018.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="4367295#12_0" pos="15.94" parking="1" started="9974.00" ended="10034.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="910683499_0" pos="15.58" parking="1" started="10375.00" ended="10435.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="1056263235_0" pos="12.59" parking="1" started="10611.00" ended="10671.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_2" type="myCourier" lane="1349109818_0" pos="49.07" parking="1" started="10664.00" ended="10724.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="42424264#0_0" pos="35.52" parking="1" started="10703.00" ended="10763.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="-892363667_0" pos="0.08" parking="1" started="10879.00" ended="10939.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="37745571#4_0" pos="13.49" parking="1" started="10883.00" ended="10943.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_3" type="myCourier" lane="-892363665_0" pos="0.09" parking="1" started="10974.00" ended="11034.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="-161250706#1_0" pos="23.36" parking="1" started="11121.00" ended="11181.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_2" type="myCourier" lane="364161339#2_0" pos="42.67" parking="1" started="11373.00" ended="11433.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_2" type="myCourier" lane="131640700#0_0" pos="115.60" parking="1" started="11458.00" ended="11518.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_2" type="myCourier" lane="-131640699#0_0" pos="97.26" parking="1" started="11548.00" ended="11608.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_2" type="myCourier" lane="17436114#0_0" pos="46.69" parking="1" started="12013.00" ended="12073.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="-273229259_0" pos="90.28" parking="1" started="12038.00" ended="12098.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_2" type="myCourier" lane="274825775#3_0" pos="17.50" parking="1" started="12206.00" ended="12266.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="415056978#0_0" pos="12.09" parking="1" started="12242.00" ended="12302.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="-23544932#9_0" pos="66.51" parking="1" started="12551.00" ended="12611.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_2" type="myCourier" lane="-1042536057_0" pos="450.38" parking="1" started="12593.00" ended="12653.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="4762142#2_0" pos="118.95" parking="1" started="12818.00" ended="12878.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_2" type="myCourier" lane="321536730#9_0" pos="11.55" parking="1" started="12844.00" ended="12904.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="173198396#7_0" pos="10.62" parking="1" started="12916.00" ended="12976.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="-1287040607_0" pos="14.13" parking="1" started="13167.00" ended="13227.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_2" type="myCourier" lane="-427089694#6_0" pos="104.80" parking="1" started="13184.00" ended="13244.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+    <stopinfo id="courier_1" type="myCourier" lane="-522866676#2_0" pos="14.62" parking="1" started="13392.00" ended="13452.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0"/>
+</stops>

@@ -1,0 +1,137 @@
+SIMULATION (3_1)
+SIMULATION (3_1)
+All couriers have left the simulation (step=14530)
+All couriers have left the simulation (step=14530)
+run_simulation(experiments/experiment_3_1/experiment.sumo.cfg) spent 108.17621750000399 seconds
+SIMULATION (3_2)
+run_simulation(experiments/experiment_3_1/experiment.sumo.cfg) spent 108.17621750000399 seconds
+SIMULATION (3_2)
+SIMULATION (3_2)
+All couriers have left the simulation (step=13852)
+run_simulation(experiments/experiment_3_2/experiment.sumo.cfg) spent 100.98655919999874 seconds
+SIMULATION (3_3)
+SIMULATION (3_3)
+Warning: Vehicle '4656' performs emergency braking on lane '23241385#2_1' with decel=9.00, wished=4.50, severity=1.00, time=10012.00.
+All couriers have left the simulation (step=15278)
+run_simulation(experiments/experiment_3_3/experiment.sumo.cfg) spent 111.7981301999971 seconds
+SIMULATION (3_4)
+Warning: Vehicle '4656' performs emergency braking on lane '23241385#2_1' with decel=9.00, wished=4.50, severity=1.00, time=10013.00.
+All couriers have left the simulation (step=14593)
+run_simulation(experiments/experiment_3_4/experiment.sumo.cfg) spent 107.3263042000035 seconds
+SIMULATION (3_5)
+Warning: Vehicle '4656' performs emergency braking on lane '23241385#2_1' with decel=9.00, wished=4.50, severity=1.00, time=10012.00.
+All couriers have left the simulation (step=15278)
+run_simulation(experiments/experiment_3_5/experiment.sumo.cfg) spent 110.41744859999744 seconds
+SIMULATION (4_1)
+All couriers have left the simulation (step=14530)
+run_simulation(experiments/experiment_4_1/experiment.sumo.cfg) spent 105.40107330000319 seconds
+SIMULATION (4_2)
+All couriers have left the simulation (step=13852)
+run_simulation(experiments/experiment_4_2/experiment.sumo.cfg) spent 100.36724239999603 seconds
+SIMULATION (4_3)
+Warning: Vehicle '4656' performs emergency braking on lane '23241385#2_1' with decel=9.00, wished=4.50, severity=1.00, time=10012.00.
+All couriers have left the simulation (step=15278)
+run_simulation(experiments/experiment_4_3/experiment.sumo.cfg) spent 113.75194670000928 seconds
+SIMULATION (4_4)
+Warning: Vehicle '4656' performs emergency braking on lane '23241385#2_1' with decel=9.00, wished=4.50, severity=1.00, time=10013.00.
+All couriers have left the simulation (step=14593)
+run_simulation(experiments/experiment_4_4/experiment.sumo.cfg) spent 107.72662970000238 seconds
+SIMULATION (4_5)
+Warning: Vehicle '4656' performs emergency braking on lane '23241385#2_1' with decel=9.00, wished=4.50, severity=1.00, time=10012.00.
+All couriers have left the simulation (step=15278)
+run_simulation(experiments/experiment_4_5/experiment.sumo.cfg) spent 113.97655870000017 seconds
+SIMULATION (10_1)
+All couriers have left the simulation (step=13491)
+run_simulation(experiments/experiment_10_1/experiment.sumo.cfg) spent 100.39570319998893 seconds
+SIMULATION (10_2)
+Warning: Teleporting vehicle '1060'; junction collision with vehicle '733', lane=':575076782_2_1', gap=-1.59, time=2067.00, stage=move.
+Warning: Vehicle '1060' ends teleporting on edge '265039907', time=2067.00.
+All couriers have left the simulation (step=13953)
+run_simulation(experiments/experiment_10_2/experiment.sumo.cfg) spent 99.94726489999448 seconds
+SIMULATION (10_3)
+All couriers have left the simulation (step=13397)
+run_simulation(experiments/experiment_10_3/experiment.sumo.cfg) spent 96.9328397000063 seconds
+SIMULATION (10_4)
+All couriers have left the simulation (step=14300)
+run_simulation(experiments/experiment_10_4/experiment.sumo.cfg) spent 103.9202268999943 seconds
+SIMULATION (10_5)
+All couriers have left the simulation (step=13491)
+run_simulation(experiments/experiment_10_5/experiment.sumo.cfg) spent 98.17055870000331 seconds
+SIMULATION (13_1)
+Warning: Vehicle '4656' performs emergency braking on lane '23241385#2_1' with decel=9.00, wished=4.50, severity=1.00, time=10012.00.
+All couriers have left the simulation (step=13051)
+run_simulation(experiments/experiment_13_1/experiment.sumo.cfg) spent 102.28032410000742 seconds
+SIMULATION (13_2)
+All couriers have left the simulation (step=12661)
+run_simulation(experiments/experiment_13_2/experiment.sumo.cfg) spent 100.1604173000087 seconds
+SIMULATION (13_3)
+All couriers have left the simulation (step=13110)
+run_simulation(experiments/experiment_13_3/experiment.sumo.cfg) spent 101.25630010000896 seconds
+SIMULATION (13_4)
+All couriers have left the simulation (step=13938)
+run_simulation(experiments/experiment_13_4/experiment.sumo.cfg) spent 106.40290090000781 seconds
+SIMULATION (13_5)
+Warning: Vehicle '4656' performs emergency braking on lane '23241385#2_1' with decel=9.00, wished=4.50, severity=1.00, time=10012.00.
+All couriers have left the simulation (step=13051)
+run_simulation(experiments/experiment_13_5/experiment.sumo.cfg) spent 109.85815660000662 seconds
+SIMULATION (8_1)
+All couriers have left the simulation (step=13897)
+run_simulation(experiments/experiment_8_1/experiment.sumo.cfg) spent 114.92630079999799 seconds
+SIMULATION (8_2)
+All couriers have left the simulation (step=13765)
+run_simulation(experiments/experiment_8_2/experiment.sumo.cfg) spent 113.8091507999925 seconds
+SIMULATION (8_3)
+Warning: Vehicle '4656' performs emergency braking on lane '23241385#2_1' with decel=9.00, wished=4.50, severity=1.00, time=10013.00.
+All couriers have left the simulation (step=13802)
+run_simulation(experiments/experiment_8_3/experiment.sumo.cfg) spent 115.03449630000978 seconds
+SIMULATION (8_4)
+All couriers have left the simulation (step=13678)
+run_simulation(experiments/experiment_8_4/experiment.sumo.cfg) spent 105.89378519999445 seconds
+SIMULATION (8_5)
+All couriers have left the simulation (step=13946)
+run_simulation(experiments/experiment_8_5/experiment.sumo.cfg) spent 114.44959519999975 seconds
+SIMULATION (9_1)
+All couriers have left the simulation (step=13994)
+run_simulation(experiments/experiment_9_1/experiment.sumo.cfg) spent 113.9150939000101 seconds
+SIMULATION (9_2)
+All couriers have left the simulation (step=14030)
+run_simulation(experiments/experiment_9_2/experiment.sumo.cfg) spent 109.00288739999814 seconds
+SIMULATION (9_3)
+All couriers have left the simulation (step=13994)
+run_simulation(experiments/experiment_9_3/experiment.sumo.cfg) spent 109.95187469999655 seconds
+SIMULATION (9_4)
+All couriers have left the simulation (step=13945)
+run_simulation(experiments/experiment_9_4/experiment.sumo.cfg) spent 116.33155670000997 seconds
+SIMULATION (9_5)
+All couriers have left the simulation (step=13994)
+run_simulation(experiments/experiment_9_5/experiment.sumo.cfg) spent 110.71190740000748 seconds
+SIMULATION (1_1)
+All couriers have left the simulation (step=13925)
+run_simulation(experiments/experiment_1_1/experiment.sumo.cfg) spent 105.79475119999552 seconds
+SIMULATION (1_2)
+All couriers have left the simulation (step=14068)
+run_simulation(experiments/experiment_1_2/experiment.sumo.cfg) spent 114.81852830000571 seconds
+SIMULATION (1_3)
+All couriers have left the simulation (step=13643)
+run_simulation(experiments/experiment_1_3/experiment.sumo.cfg) spent 109.00131190000684 seconds
+SIMULATION (1_4)
+All couriers have left the simulation (step=14382)
+run_simulation(experiments/experiment_1_4/experiment.sumo.cfg) spent 117.53932460000215 seconds
+SIMULATION (1_5)
+All couriers have left the simulation (step=13925)
+run_simulation(experiments/experiment_1_5/experiment.sumo.cfg) spent 106.52967079999507 seconds
+SIMULATION (2_1)
+All couriers have left the simulation (step=12224)
+run_simulation(experiments/experiment_2_1/experiment.sumo.cfg) spent 96.1125916000019 seconds
+SIMULATION (2_2)
+All couriers have left the simulation (step=14213)
+run_simulation(experiments/experiment_2_2/experiment.sumo.cfg) spent 112.3984788999951 seconds
+SIMULATION (2_3)
+All couriers have left the simulation (step=12888)
+run_simulation(experiments/experiment_2_3/experiment.sumo.cfg) spent 93.90388939999684 seconds
+SIMULATION (2_4)
+All couriers have left the simulation (step=12224)
+run_simulation(experiments/experiment_2_4/experiment.sumo.cfg) spent 95.66526259999955 seconds
+SIMULATION (2_5)
+All couriers have left the simulation (step=12224)
+run_simulation(experiments/experiment_2_5/experiment.sumo.cfg) spent 96.25686559999303 seconds
