@@ -109,3 +109,5 @@ if __name__ == "__main__":
     print("NUMBER OF ROWS:", len(results))
 
     print(db_get("SELECT * FROM locations WHERE address='Plieņciema iela 35';")[0])
+
+    print(db_get("SELECT * FROM locations WHERE lane='162978621#2_0';"))

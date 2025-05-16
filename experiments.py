@@ -5,6 +5,7 @@ from data.addresses import get_random_addresses
 from get_routes import create_courier_routes
 import shutil
 from simulation import run_simulation
+import xml.etree.ElementTree as ET
 
 # pirmā atrisinājuma (heiristikas) metode/algoritmi:
 first_solution_strategies = [
@@ -64,6 +65,34 @@ def create_experiemnt_trips():
             i += 1
 
 
+def validate_route_file(filepath):
+    # saglabā endPos vērtības katrai apstāšanās ielai:
+    tree = ET.parse(filepath)
+    root = tree.getroot()
+    stops = {}
+    previous_stop_lane = None
+    for stop in root.iter("stop"):
+        lane = stop.attrib.get("lane")
+        pos = stop.attrib.get("endPos")
+        if previous_stop_lane == lane:
+            temp = stops[lane]
+            temp.append(float(pos))
+            temp.sort()
+            stops[lane] = temp
+        else:
+            stops[lane] = [float(pos)]
+        previous_stop_lane = lane
+    # atjaunina endPos vērtības:
+    previous_stop_lane = None
+    for stop in root.iter("stop"):
+        lane = stop.attrib.get("lane")
+        if len(stops[lane]) >= 2 or previous_stop_lane == lane:
+            stop.set("endPos", str(stops[lane].pop(0)))
+        previous_stop_lane = lane
+    # saglabā modificēto failu:
+    tree.write(filepath, encoding="utf-8", xml_declaration=True)
+
+
 def create_experiment_routes():
     for first_solution_strategy in first_solution_strategies:
         for local_search_metaheuristic in local_search_metaheuristics:
@@ -73,6 +102,7 @@ def create_experiment_routes():
                     f"ROUTES ({first_solution_strategy}_{local_search_metaheuristic})"
                 )
                 create_courier_routes(folder)
+                validate_route_file(f"{folder}/courier.rou.xml")
 
 
 def create_sumo_cfgs():
@@ -106,14 +136,8 @@ if __name__ == "__main__":
     # create_sumo_cfgs()
     run_simulations()
 
-    # create_experiment_routes()
-    # first_solution_strategy = 3
-    # local_search_metaheuristic = 2
-    # folder = (
-    #     f"experiments/experiment_{first_solution_strategy}_{local_search_metaheuristic}"
-    # )
-    # if os.path.exists(folder):
-    #     if os.path.exists(folder + "/courier.rou.xml"):
-    #         os.remove(folder + "/courier.rou.xml")
-    #     create_courier_routes(folder)
-    #     print(f"ROUTES ({first_solution_strategy}_{local_search_metaheuristic})")
+    # for first_solution_strategy in first_solution_strategies:
+    #     for local_search_metaheuristic in local_search_metaheuristics:
+    #         folder = f"experiments/experiment_{first_solution_strategy}_{local_search_metaheuristic}"
+    #         if os.path.exists(folder):
+    #             validate_route_file(f"{folder}/courier.rou.xml")
