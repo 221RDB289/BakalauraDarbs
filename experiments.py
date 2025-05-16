@@ -76,11 +76,33 @@ def create_experiment_routes():
                 )
 
 
+def create_sumo_cfgs():
+    sumo_cfg_template = "riga.sumo.cfg"
+    with open(sumo_cfg_template, "r") as f:
+        sumo_cfg = f.read()
+    for first_solution_strategy in first_solution_strategies:
+        for local_search_metaheuristic in local_search_metaheuristics:
+            folder = f"experiments/experiment_{first_solution_strategy}_{local_search_metaheuristic}"
+            if os.path.exists(folder):
+                experiment_sumo_cfg = sumo_cfg.replace(
+                    "simulation_files/courier.rou.xml", f"{folder}/courier.rou.xml"
+                )
+                experiment_sumo_cfg = sumo_cfg.replace("output/", f"{folder}/output/")
+                if not os.path.exists(f"{folder}/output/"):
+                    os.mkdir(f"{folder}/output/")
+                with open(f"{folder}/riga.sumo.cfg", "w") as f:
+                    f.write(experiment_sumo_cfg)
+                print(
+                    f"SUMO CFG ({first_solution_strategy}_{local_search_metaheuristic})"
+                )
+
+
 import time
 
 if __name__ == "__main__":
     # create_experiemnt_trips()
-    create_experiment_routes()
+    # create_experiment_routes()
+    create_sumo_cfgs()
 
     # create_experiment_routes()
     # first_solution_strategy = 3
