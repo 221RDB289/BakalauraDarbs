@@ -143,7 +143,9 @@ def get_osm():
             )
             print("Downloaded: latvia-latest.osm.pbf")
 
-        # 2. iegūst Rīgas reģiona robežas:
+        # 2. iegūst Rīgas un Mārupes pagasta robežas:
+
+        # iegūst Rīgas reģiona robežas:
         if not os.path.exists(f"{TEMP}/riga.poly"):
             urllib.request.urlretrieve(
                 "https://polygons.openstreetmap.fr/get_poly.py?id=13048688&params=0",
@@ -151,7 +153,7 @@ def get_osm():
             )
             print("Downloaded: riga.poly")
 
-        # 3. iegūst Mārupes pagasta reģiona robežas:
+        # iegūst Mārupes pagasta reģiona robežas:
         if not os.path.exists(f"{TEMP}/marupe.poly"):
             urllib.request.urlretrieve(
                 "https://polygons.openstreetmap.fr/get_poly.py?id=13048774&params=0",
@@ -159,7 +161,7 @@ def get_osm():
             )
             print("Downloaded: marupe.poly")
 
-        # 4. apvieno robežas, kā arī izpleš Rīgas robežu:
+        # 3. apvieno robežas, kā arī izpleš Rīgas robežu:
         if not os.path.exists(f"{TEMP}/combined.poly"):
             riga_poly = read_poly(f"{TEMP}/riga.poly")
             riga_poly_buffered = buffer_polygon(
@@ -170,13 +172,15 @@ def get_osm():
             write_poly(combined_poly)
             print("Combined and modified polygons: combined.poly")
 
-        # 5. iegūst "osmosis" atrašanās vietu:
+        # 4. filtrē izvēlētos reģionus no Latvijas OSM faila:
+
+        # iegūst "osmosis" atrašanās vietu:
         osmosis = shutil.which("osmosis")
         if not osmosis:
             print("ERROR: osmosis is not installed")
             sys.exit()
 
-        # 6. filtrē izvēlētos reģionus no Latvijas OSM faila:
+        # filtrē datus pēc izvēlētajiem reģioniem:
         if not os.path.exists(f"{TEMP}/map_filtered.osm"):
             cmd = [
                 osmosis,
@@ -189,12 +193,12 @@ def get_osm():
             ]
             subprocess.run(cmd)
 
-        # 7. modificē OSM failu, lai izlabotu neeksistējošos maksimālos ātrumus:
+        # 5. modificē OSM failu, lai izlabotu neeksistējošos maksimālos ātrumus:
         if not os.path.exists(f"{TEMP}/map_modified.osm"):
             modify_osm(TEMP, "map_filtered.osm", "map_modified.osm")
             print("Modified the map: map_modified.osm")
 
-        # 8. iegūst sākotnējo SUMO tīkla failu:
+        # 6. iegūst sākotnējo SUMO tīkla failu:
         if not os.path.exists(f"{TEMP}/map_temp.net.xml"):
             if shutil.which("netconvert"):
                 cmd = [
@@ -221,7 +225,9 @@ def get_osm():
                 print("ERROR: SUMO is not installed")
                 sys.exit()
 
-        # 9. pārbauda kurām ielām var piekļūt no konkrētās ielas (ņemot vērā ielu virzienus):
+        # 7. veic ielu pieejamības atlasi saistībā ar noliktavu:
+
+        # pārbauda kurām ielām var piekļūt no konkrētās ielas (ņemot vērā ielu virzienus):
         if not os.path.exists(f"{TEMP}/selection_from.txt"):
             cmd = [
                 "python",
@@ -234,7 +240,7 @@ def get_osm():
             ]
             subprocess.run(cmd)
 
-        # 10. pārbauda kuras ielas var nokļūt konkrētajai ielai (ņemot vērā ielu virzienus):
+        # pārbauda kuras ielas var nokļūt konkrētajai ielai (ņemot vērā ielu virzienus):
         if not os.path.exists(f"{TEMP}/selection_to.txt"):
             cmd = [
                 "python",
@@ -247,7 +253,7 @@ def get_osm():
             ]
             subprocess.run(cmd)
 
-        # 11. apvieno pareizās ielas vienā failā:
+        # apvieno pieejamās ielas vienā failā:
         if not os.path.exists(f"{TEMP}/selection_combined.txt"):
             with open(f"{TEMP}/selection_from.txt", "r") as f:
                 edges1 = set(line.strip() for line in f)
@@ -259,7 +265,7 @@ def get_osm():
                     f.write(f"{edge}\n")
             print("Combined and edges: selection_combined.txt")
 
-        # 12. iegūst beigu SUMO tīkla failu:
+        # 8. iegūst galējo SUMO tīkla failu:
         if not os.path.exists(f"{FOLDER}/map.net.xml"):
             if shutil.which("netconvert"):
                 cmd = [
@@ -276,7 +282,7 @@ def get_osm():
                 print("ERROR: SUMO is not installed")
                 sys.exit()
 
-        # 13. iegūst ēkas:
+        # 9. iegūst ēkas:
         if not os.path.exists(f"{FOLDER}/buildings.poly.xml"):
             if shutil.which("polyconvert"):
                 cmd = [
