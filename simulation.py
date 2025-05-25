@@ -28,6 +28,8 @@ def run_simulation(sumo_cfg_file):
 
 
 if __name__ == "__main__":
+    print("manual simulation")
     # run_simulation("riga.sumo.cfg")
     # run_simulation("experiments/experiment_10_1/experiment.sumo.cfg")
-    run_simulation("experiments/experiment_3_1/experiment.sumo.cfg")
+    # run_simulation("experiments/experiment_2_4/experiment.sumo.cfg")
+    # run_simulation("experiments/experiment_2_5/experiment.sumo.cfg")

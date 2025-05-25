@@ -133,8 +133,8 @@ def run_simulations():
 
 
 if __name__ == "__main__":
-    # create_experiemnt_trips()
-    # create_experiment_routes()
+    create_experiemnt_trips()
+    create_experiment_routes()
     create_sumo_cfgs()
     run_simulations()
 
