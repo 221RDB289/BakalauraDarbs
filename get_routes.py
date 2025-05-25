@@ -31,7 +31,7 @@ def create_random_routes():
 
 # kurjeru maršruti:
 def create_courier_routes(folder):
-    # TODO: jāizmanto --routing-algorithm https://sumo.dlr.de/docs/Simulation/Routing.html
+    # var izmantot --routing-algorithm https://sumo.dlr.de/docs/Simulation/Routing.html
     # duarouter iestatījumi: https://sumo.dlr.de/docs/duarouter.html
     if shutil.which("duarouter"):
         if not os.path.exists(f"{folder}/courier.rou.xml"):

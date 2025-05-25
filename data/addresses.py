@@ -31,7 +31,7 @@ def get_random_addresses(new=False, x=100):
 # radius = tuvuma rādiuss metros
 def lanes_to_db(addresses, radius=100):
     print(f"FINDING LANES FOR {len(addresses)} ADDRESSES")
-    # atveram SUMO network mapes failu:
+    # atver SUMO network mapes failu:
     network_file = "simulation_files/map.net.xml"
     network = net.readNet(network_file)
     print("LOADED: map.net.xml")
@@ -109,5 +109,4 @@ def prapare_addresses(x):
         addresses_to_db("addresses.kml")
         addresses = db_get(f"SELECT * FROM locations WHERE lane IS NULL;")
         filtered_addresses = lanes_to_db(addresses, 50)
-        # filtered_addresses = lanes_to_db(addresses, 1000) # ja vajag visām adresēm (testa brīdī 437 adresēm nevarēja atrast tuvāko ceļu ar 100 metru rādiusu)
         random_addresses = get_random_addresses(new=True, x=x)
