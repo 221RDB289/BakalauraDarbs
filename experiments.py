@@ -43,7 +43,7 @@ def create_experiemnt_trips():
     depot_address = "Plieņciema iela 35"
     courier_count = 4
     max_distance_m = 100000  # maksimālais nobraukšanas daudzums (m) katram kurjeram
-    solution_seconds = 300  # 5 minūtes, lai atrastu optimālo risinājumu
+    solution_seconds = 60  # 1 minūte, lai atrastu optimālo risinājumu
     # eksperimentu veidošana:
     i = 1
     for first_solution_strategy in first_solution_strategies:
@@ -117,9 +117,7 @@ def create_sumo_cfgs():
                     "static_files/template.sumo.cfg",
                     f"{folder}/experiment.sumo.cfg",
                 )
-                # izveido arī output folderi:
-                if not os.path.exists(f"{folder}/output"):
-                    os.mkdir(f"{folder}/output")
+
 
 def run_simulations():
     for first_solution_strategy in first_solution_strategies:
@@ -133,13 +131,16 @@ def run_simulations():
 
 
 if __name__ == "__main__":
-    create_experiemnt_trips()
-    create_experiment_routes()
-    create_sumo_cfgs()
-    run_simulations()
+    # create_experiemnt_trips()
+    # create_experiment_routes()
+    # create_sumo_cfgs()
+    # run_simulations()
 
     # for first_solution_strategy in first_solution_strategies:
     #     for local_search_metaheuristic in local_search_metaheuristics:
     #         folder = f"experiments/experiment_{first_solution_strategy}_{local_search_metaheuristic}"
     #         if os.path.exists(folder):
     #             validate_route_file(f"{folder}/courier.rou.xml")
+
+    for i in first_solution_strategies:
+        print(i)
